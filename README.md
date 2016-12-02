@@ -2,6 +2,10 @@
 
 Number Formatter of Fixed Significance with Metric Unit Prefix
 
+[![Build Status](https://travis-ci.org/qu1x/signifix.svg?branch=master)](https://travis-ci.org/qu1x/signifix)
+
+[Documentation](https://docs.rs/signifix/0.1.0/signifix/)
+
 Signifix guarantees a fixed number of significant figures and a fixed number
 of resulting characters by automatically choosing the metric unit prefix and
 appropriately adjusting the floating point precision.
