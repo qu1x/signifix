@@ -123,7 +123,7 @@ use std::convert::TryFrom;
 
 /// An error arising from this crate's `TryFrom` trait implementation for its
 /// `Signifix` type.
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub enum Error {
 	/// The number to convert from is below the lower bound ±1.000 y (= ±1e-24)
 	/// due to the lowermost metric unit prefix yocto (y = 1e-24).
@@ -131,7 +131,11 @@ pub enum Error {
 	/// The number to convert from is above the upper bound ±999.9 Y (≅ ±1e+27)
 	/// due to the uppermost metric unit prefix yotta (Y = 1e+24).
 	OutOfUpperBound(f64),
+	/// The number to convert from is actually Not a Number (NaN).
+	Nan,
 }
+
+impl Eq for Error {}
 
 impl std::fmt::Display for Error {
 	fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
@@ -141,6 +145,8 @@ impl std::fmt::Display for Error {
 				write!(f, "{} for number {:+.3e}", self.description(), number),
 			::Error::OutOfUpperBound(number) =>
 				write!(f, "{} for number {:+.3e}", self.description(), number),
+			::Error::Nan =>
+				write!(f, "{}", self.description()),
 		}
 	}
 }
@@ -152,12 +158,15 @@ impl std::error::Error for Error {
 				"Out of lower bound ±1.000 y (= ±1e-24)",
 			Error::OutOfUpperBound(..) =>
 				"Out of upper bound ±999.9 Y (≅ ±1e+27)",
+			Error::Nan =>
+				"Not a Number (NaN)",
 		}
 	}
 	fn cause(&self) -> Option<&std::error::Error> {
 		match *self {
 			Error::OutOfLowerBound(..) => None,
 			Error::OutOfUpperBound(..) => None,
+			Error::Nan => None,
 		}
 	}
 }
@@ -279,7 +288,11 @@ impl Signifix {
 						significand: signed(1e+00),
 					})
 				} else {
-					Err(Error::OutOfUpperBound(number))
+					if number.is_nan() {
+						Err(Error::Nan)
+					} else {
+						Err(Error::OutOfUpperBound(number))
+					}
 				}
 			}
 		}
@@ -372,5 +385,16 @@ mod tests {
 	fn upper_prefix_round() {
 		assert_eq!(fmt_def(999.9499999999998e+03).ok(), Some("999.9 k".into()));
 		assert_eq!(fmt_def(999.9499999999999e+03).ok(), Some("1.000 M".into()));
+	}
+	#[test]
+	fn fp_category_safety() {
+		assert_eq!(fmt_def(0.0).err(),
+			Some(Error::OutOfLowerBound(0.0)));
+		assert_eq!(fmt_def(std::f64::NEG_INFINITY).err(),
+			Some(Error::OutOfUpperBound(std::f64::NEG_INFINITY)));
+		assert_eq!(fmt_def(std::f64::INFINITY).err(),
+			Some(Error::OutOfUpperBound(std::f64::INFINITY)));
+		assert_eq!(fmt_def(std::f64::NAN).err(),
+			Some(Error::Nan));
 	}
 }
