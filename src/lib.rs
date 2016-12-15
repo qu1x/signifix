@@ -354,11 +354,11 @@ mod tests {
 	}
 	#[test]
 	fn fixed_significance() {
-		assert_eq!(fmt_def(1e+02).ok(), Some("100.0  ".into()));
-		assert_eq!(fmt_def(1e+03).ok(), Some("1.000 k".into()));
-		assert_eq!(fmt_def(1e+04).ok(), Some("10.00 k".into()));
-		assert_eq!(fmt_def(1e+05).ok(), Some("100.0 k".into()));
-		assert_eq!(fmt_def(1e+06).ok(), Some("1.000 M".into()));
+		assert_eq!(fmt_def(1.234e+02).ok(), Some("123.4  ".into()));
+		assert_eq!(fmt_def(1.234e+03).ok(), Some("1.234 k".into()));
+		assert_eq!(fmt_def(1.234e+04).ok(), Some("12.34 k".into()));
+		assert_eq!(fmt_def(1.234e+05).ok(), Some("123.4 k".into()));
+		assert_eq!(fmt_def(1.234e+06).ok(), Some("1.234 M".into()));
 	}
 	#[test]
 	fn formatting_options() {
