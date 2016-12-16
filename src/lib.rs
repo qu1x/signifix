@@ -335,6 +335,16 @@ impl TryFrom<u64> for Signifix {
 	fn try_from(number: u64) -> Result<Self> { Self::try_from(number as f64) }
 }
 
+impl TryFrom<isize> for Signifix {
+	type Err = Error;
+	fn try_from(number: isize) -> Result<Self> { Self::try_from(number as f64) }
+}
+
+impl TryFrom<usize> for Signifix {
+	type Err = Error;
+	fn try_from(number: usize) -> Result<Self> { Self::try_from(number as f64) }
+}
+
 impl TryFrom<f32> for Signifix {
 	type Err = Error;
 	fn try_from(number: f32) -> Result<Self> { Self::try_from(number as f64) }
