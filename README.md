@@ -24,6 +24,8 @@ signifix = "0.1.0"
 and this to your crate root:
 
 ```rust
+#![feature(try_from)] // Until stabilized.
+
 extern crate signifix;
 ```
 
@@ -33,8 +35,7 @@ The fixed number of significant figures and resulting characters prevent the
 digits and prefixed units from jumping to the left or right:
 
 ```rust
-#![feature(try_from)]
-use std::convert::TryFrom;
+use std::convert::TryFrom; // Until stabilized.
 
 use signifix::{Signifix, Result};
 
@@ -58,8 +59,7 @@ assert_eq!(format(1e+06).ok(), Some("1.000 M".into()));
 This is useful to smoothly refresh a transfer rate inside a terminal:
 
 ```rust
-#![feature(try_from)]
-use std::convert::TryFrom;
+use std::convert::TryFrom; // Until stabilized.
 
 use signifix::{Signifix, Result};
 
@@ -76,8 +76,7 @@ Or to monitor a measured quantity like an electrical current including its
 direction with an optional space placeholder to align with negative values.
 
 ```rust
-#![feature(try_from)]
-use std::convert::TryFrom;
+use std::convert::TryFrom; // Until stabilized.
 
 use signifix::{Signifix, Result};
 
@@ -93,8 +92,7 @@ In case of displaying a file size difference after modification, a plus sign
 might be preferred for positive values:
 
 ```rust
-#![feature(try_from)]
-use std::convert::TryFrom;
+use std::convert::TryFrom; // Until stabilized.
 
 use signifix::{Signifix, Result};
 
