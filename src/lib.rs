@@ -36,6 +36,8 @@
 //! and this to your crate root:
 //!
 //! ```
+//! #![feature(try_from)] // Until stabilized.
+//!
 //! extern crate signifix;
 //! ```
 //!
@@ -45,8 +47,8 @@
 //! digits and prefixed units from jumping to the left or right:
 //!
 //! ```
-//! #![feature(try_from)]
-//! use std::convert::TryFrom;
+//! # #![feature(try_from)]
+//! use std::convert::TryFrom; // Until stabilized.
 //!
 //! use signifix::{Signifix, Result};
 //!
@@ -70,8 +72,8 @@
 //! This is useful to smoothly refresh a transfer rate inside a terminal:
 //!
 //! ```
-//! #![feature(try_from)]
-//! use std::convert::TryFrom;
+//! # #![feature(try_from)]
+//! use std::convert::TryFrom; // Until stabilized.
 //!
 //! use signifix::{Signifix, Result};
 //!
@@ -88,8 +90,8 @@
 //! direction with an optional space placeholder to align with negative values.
 //!
 //! ```
-//! #![feature(try_from)]
-//! use std::convert::TryFrom;
+//! # #![feature(try_from)]
+//! use std::convert::TryFrom; // Until stabilized.
 //!
 //! use signifix::{Signifix, Result};
 //!
@@ -105,8 +107,8 @@
 //! might be preferred for positive values:
 //!
 //! ```
-//! #![feature(try_from)]
-//! use std::convert::TryFrom;
+//! # #![feature(try_from)]
+//! use std::convert::TryFrom; // Until stabilized.
 //!
 //! use signifix::{Signifix, Result};
 //!
