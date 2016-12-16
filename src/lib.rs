@@ -185,21 +185,17 @@ pub type Result<T> = std::result::Result<T, Error>;
 /// to align with negative numbers.
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Signifix {
-	prefix: char,
-	precision: usize,
-	significand: f64,
+	/// Automatically chosen metric unit prefix ranging from y to Y.
+	pub prefix: char,
+	/// Appropriately adjusted floating point precision ranging from 1 to 3.
+	pub precision: usize,
+	/// Metrically normalized signed significand ranging from ±1.000 to ±999.9.
+	pub significand: f64,
 }
 
 impl Eq for Signifix {}
 
 impl Signifix {
-	/// Automatically chosen metric unit prefix ranging from y to Y.
-	pub fn prefix(&self) -> char { self.prefix }
-	/// Appropriately adjusted floating point precision ranging from 1 to 3.
-	pub fn precision(&self) -> usize { self.precision }
-	/// Metrically normalized signed significand ranging from ±1.000 to ±999.9.
-	pub fn significand(&self) -> f64 { self.significand }
-
 	fn try_from(number: f64) -> Result<Self> {
 		let factor = [
 			1e-24, 1e-21, 1e-18, 1e-15, 1e-12, 1e-09, 1e-06, 1e-03,
