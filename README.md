@@ -3,11 +3,8 @@
 Number Formatter of Fixed Significance with Metric Unit Prefix
 
 [![Build Status](https://travis-ci.org/qu1x/signifix.svg?branch=master)](https://travis-ci.org/qu1x/signifix)
-
 [![Version](https://img.shields.io/crates/v/signifix.svg)](https://crates.io/crates/signifix)
-
 [![Downloads](https://img.shields.io/crates/d/signifix.svg)](https://crates.io/crates/signifix)
-
 [![License](https://img.shields.io/crates/l/signifix.svg)](https://crates.io/crates/signifix)
 
 [Documentation](https://docs.rs/signifix/0.1.0/signifix/)
