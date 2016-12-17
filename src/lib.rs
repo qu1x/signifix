@@ -127,13 +127,13 @@ use std::convert::TryFrom;
 /// `Signifix` type.
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub enum Error {
-	/// The number to convert from is below the lower bound ±1.000 y (= ±1e-24)
-	/// due to the lowermost metric unit prefix yocto (y = 1e-24).
+	/// The given number is below the lower bound ±1.000 y (= ±1e-24) of the
+	/// lowermost metric unit prefix yocto (y = 1e-24).
 	OutOfLowerBound(f64),
-	/// The number to convert from is above the upper bound ±999.9 Y (≅ ±1e+27)
-	/// due to the uppermost metric unit prefix yotta (Y = 1e+24).
+	/// The given number is above the upper bound ±999.9 Y (≅ ±1e+27) of the
+	/// uppermost metric unit prefix yotta (Y = 1e+24).
 	OutOfUpperBound(f64),
-	/// The number to convert from is actually Not a Number (NaN).
+	/// The given number is actually Not a Number (NaN).
 	Nan,
 }
 
