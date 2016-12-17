@@ -7,7 +7,7 @@ Number Formatter of Fixed Significance with Metric Unit Prefix
 [![Downloads](https://img.shields.io/crates/d/signifix.svg)](https://crates.io/crates/signifix)
 [![License](https://img.shields.io/crates/l/signifix.svg)](https://www.gnu.org/licenses/lgpl-3.0.en.html)
 
-[Documentation](https://docs.rs/signifix/0.1.0/signifix/)
+[Documentation](https://docs.rs/signifix/0.2.0/signifix/)
 
 Signifix guarantees a fixed number of significant figures and a fixed number
 of resulting characters by automatically choosing the metric unit prefix and
@@ -21,7 +21,7 @@ used by adding `signifix` to the dependencies in your project's
 
 ```toml
 [dependencies]
-signifix = "0.1.0"
+signifix = "0.2.0"
 ```
 
 and this to your crate root:
