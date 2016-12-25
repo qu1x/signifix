@@ -197,7 +197,63 @@ pub struct Signifix {
 
 impl Eq for Signifix {}
 
-impl Signifix {
+impl TryFrom<i8> for Signifix {
+	type Err = Error;
+	fn try_from(number: i8) -> Result<Self> { Self::try_from(number as f64) }
+}
+
+impl TryFrom<i16> for Signifix {
+	type Err = Error;
+	fn try_from(number: i16) -> Result<Self> { Self::try_from(number as f64) }
+}
+
+impl TryFrom<i32> for Signifix {
+	type Err = Error;
+	fn try_from(number: i32) -> Result<Self> { Self::try_from(number as f64) }
+}
+
+impl TryFrom<i64> for Signifix {
+	type Err = Error;
+	fn try_from(number: i64) -> Result<Self> { Self::try_from(number as f64) }
+}
+
+impl TryFrom<u8> for Signifix {
+	type Err = Error;
+	fn try_from(number: u8) -> Result<Self> { Self::try_from(number as f64) }
+}
+
+impl TryFrom<u16> for Signifix {
+	type Err = Error;
+	fn try_from(number: u16) -> Result<Self> { Self::try_from(number as f64) }
+}
+
+impl TryFrom<u32> for Signifix {
+	type Err = Error;
+	fn try_from(number: u32) -> Result<Self> { Self::try_from(number as f64) }
+}
+
+impl TryFrom<u64> for Signifix {
+	type Err = Error;
+	fn try_from(number: u64) -> Result<Self> { Self::try_from(number as f64) }
+}
+
+impl TryFrom<isize> for Signifix {
+	type Err = Error;
+	fn try_from(number: isize) -> Result<Self> { Self::try_from(number as f64) }
+}
+
+impl TryFrom<usize> for Signifix {
+	type Err = Error;
+	fn try_from(number: usize) -> Result<Self> { Self::try_from(number as f64) }
+}
+
+impl TryFrom<f32> for Signifix {
+	type Err = Error;
+	fn try_from(number: f32) -> Result<Self> { Self::try_from(number as f64) }
+}
+
+impl TryFrom<f64> for Signifix {
+	type Err = Error;
 	fn try_from(number: f64) -> Result<Self> {
 		let factor = [
 			1e-24, 1e-21, 1e-18, 1e-15, 1e-12, 1e-09, 1e-06, 1e-03,
@@ -295,66 +351,6 @@ impl Signifix {
 			}
 		}
 	}
-}
-
-impl TryFrom<i8> for Signifix {
-	type Err = Error;
-	fn try_from(number: i8) -> Result<Self> { Self::try_from(number as f64) }
-}
-
-impl TryFrom<i16> for Signifix {
-	type Err = Error;
-	fn try_from(number: i16) -> Result<Self> { Self::try_from(number as f64) }
-}
-
-impl TryFrom<i32> for Signifix {
-	type Err = Error;
-	fn try_from(number: i32) -> Result<Self> { Self::try_from(number as f64) }
-}
-
-impl TryFrom<i64> for Signifix {
-	type Err = Error;
-	fn try_from(number: i64) -> Result<Self> { Self::try_from(number as f64) }
-}
-
-impl TryFrom<u8> for Signifix {
-	type Err = Error;
-	fn try_from(number: u8) -> Result<Self> { Self::try_from(number as f64) }
-}
-
-impl TryFrom<u16> for Signifix {
-	type Err = Error;
-	fn try_from(number: u16) -> Result<Self> { Self::try_from(number as f64) }
-}
-
-impl TryFrom<u32> for Signifix {
-	type Err = Error;
-	fn try_from(number: u32) -> Result<Self> { Self::try_from(number as f64) }
-}
-
-impl TryFrom<u64> for Signifix {
-	type Err = Error;
-	fn try_from(number: u64) -> Result<Self> { Self::try_from(number as f64) }
-}
-
-impl TryFrom<isize> for Signifix {
-	type Err = Error;
-	fn try_from(number: isize) -> Result<Self> { Self::try_from(number as f64) }
-}
-
-impl TryFrom<usize> for Signifix {
-	type Err = Error;
-	fn try_from(number: usize) -> Result<Self> { Self::try_from(number as f64) }
-}
-
-impl TryFrom<f32> for Signifix {
-	type Err = Error;
-	fn try_from(number: f32) -> Result<Self> { Self::try_from(number as f64) }
-}
-
-impl TryFrom<f64> for Signifix {
-	type Err = Error;
-	fn try_from(number: f64) -> Result<Self> { Self::try_from(number) }
 }
 
 impl std::fmt::Display for Signifix {
