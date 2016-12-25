@@ -211,40 +211,40 @@ impl Signifix {
 		];
 		let (significand, prefix) = {
 			let number = number.abs();
-			let prefix =
-				if number < factor[8] {
-					if number < factor[4] {
-						if number < factor[2] {
-							if number < factor[1] { 0 } else { 1 }
-						} else {
-							if number < factor[3] { 2 } else { 3 }
-						}
+			if number < factor[8] {
+				let prefix = if number < factor[4] {
+					if number < factor[2] {
+						if number < factor[1] { 0 } else { 1 }
 					} else {
-						if number < factor[6] {
-							if number < factor[5] { 4 } else { 5 }
-						} else {
-							if number < factor[7] { 6 } else { 7 }
-						}
+						if number < factor[3] { 2 } else { 3 }
 					}
-				} else
-				if number < factor[9] {
-					8
 				} else {
-					if number < factor[13] {
-						if number < factor[11] {
-							if number < factor[10] { 9 } else { 10 }
-						} else {
-							if number < factor[12] { 11 } else { 12 }
-						}
+					if number < factor[6] {
+						if number < factor[5] { 4 } else { 5 }
 					} else {
-						if number < factor[15] {
-							if number < factor[14] { 13 } else { 14 }
-						} else {
-							if number < factor[16] { 15 } else { 16 }
-						}
+						if number < factor[7] { 6 } else { 7 }
 					}
 				};
-			(if prefix == 8 { number } else { number / factor[prefix] }, prefix)
+				(number / factor[prefix], prefix)
+			} else
+			if number < factor[9] {
+				(number, 8)
+			} else {
+				let prefix = if number < factor[13] {
+					if number < factor[11] {
+						if number < factor[10] { 9 } else { 10 }
+					} else {
+						if number < factor[12] { 11 } else { 12 }
+					}
+				} else {
+					if number < factor[15] {
+						if number < factor[14] { 13 } else { 14 }
+					} else {
+						if number < factor[16] { 15 } else { 16 }
+					}
+				};
+				(number / factor[prefix], prefix)
+			}
 		};
 		let scaled = |pow: f64| { (significand * pow).round() };
 		let signed = |abs: f64| {
