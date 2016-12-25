@@ -197,6 +197,20 @@ pub struct Signifix {
 
 impl Eq for Signifix {}
 
+/// Metric unit prefix factors from 1e-24 to 1e+24 indexed from 0 to 16.
+pub const FACTOR: [f64; 17] = [
+	1e-24, 1e-21, 1e-18, 1e-15, 1e-12, 1e-09, 1e-06, 1e-03,
+	1e+00,
+	1e+03, 1e+06, 1e+09, 1e+12, 1e+15, 1e+18, 1e+21, 1e+24,
+];
+
+/// Metric unit prefix symbols from y to Y indexed from 0 to 16.
+pub const SYMBOL: [char; 17] = [
+	'y', 'z', 'a', 'f', 'p', 'n', 'µ', 'm',
+	' ',
+	'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y',
+];
+
 impl TryFrom<i8> for Signifix {
 	type Err = Error;
 	fn try_from(number: i8) -> Result<Self> { Self::try_from(number as f64) }
@@ -255,51 +269,41 @@ impl TryFrom<f32> for Signifix {
 impl TryFrom<f64> for Signifix {
 	type Err = Error;
 	fn try_from(number: f64) -> Result<Self> {
-		let factor = [
-			1e-24, 1e-21, 1e-18, 1e-15, 1e-12, 1e-09, 1e-06, 1e-03,
-			1e+00,
-			1e+03, 1e+06, 1e+09, 1e+12, 1e+15, 1e+18, 1e+21, 1e+24,
-		];
-		let symbol = [
-			'y', 'z', 'a', 'f', 'p', 'n', 'µ', 'm',
-			' ',
-			'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y',
-		];
 		let (significand, prefix) = {
 			let number = number.abs();
-			if number < factor[8] {
-				let prefix = if number < factor[4] {
-					if number < factor[2] {
-						if number < factor[1] { 0 } else { 1 }
+			if number < FACTOR[8] {
+				let prefix = if number < FACTOR[4] {
+					if number < FACTOR[2] {
+						if number < FACTOR[1] { 0 } else { 1 }
 					} else {
-						if number < factor[3] { 2 } else { 3 }
+						if number < FACTOR[3] { 2 } else { 3 }
 					}
 				} else {
-					if number < factor[6] {
-						if number < factor[5] { 4 } else { 5 }
+					if number < FACTOR[6] {
+						if number < FACTOR[5] { 4 } else { 5 }
 					} else {
-						if number < factor[7] { 6 } else { 7 }
+						if number < FACTOR[7] { 6 } else { 7 }
 					}
 				};
-				(number / factor[prefix], prefix)
+				(number / FACTOR[prefix], prefix)
 			} else
-			if number < factor[9] {
+			if number < FACTOR[9] {
 				(number, 8)
 			} else {
-				let prefix = if number < factor[13] {
-					if number < factor[11] {
-						if number < factor[10] { 9 } else { 10 }
+				let prefix = if number < FACTOR[13] {
+					if number < FACTOR[11] {
+						if number < FACTOR[10] { 9 } else { 10 }
 					} else {
-						if number < factor[12] { 11 } else { 12 }
+						if number < FACTOR[12] { 11 } else { 12 }
 					}
 				} else {
-					if number < factor[15] {
-						if number < factor[14] { 13 } else { 14 }
+					if number < FACTOR[15] {
+						if number < FACTOR[14] { 13 } else { 14 }
 					} else {
-						if number < factor[16] { 15 } else { 16 }
+						if number < FACTOR[16] { 15 } else { 16 }
 					}
 				};
-				(number / factor[prefix], prefix)
+				(number / FACTOR[prefix], prefix)
 			}
 		};
 		let scaled = |pow: f64| { (significand * pow).round() };
@@ -314,14 +318,14 @@ impl TryFrom<f64> for Signifix {
 					Err(Error::OutOfLowerBound(number))
 				} else {
 					Ok(Signifix {
-						prefix: symbol[prefix],
+						prefix: SYMBOL[prefix],
 						precision: 3,
 						significand: signed(lower / 1e+03),
 					})
 				}
 			} else {
 				Ok(Signifix {
-					prefix: symbol[prefix],
+					prefix: SYMBOL[prefix],
 					precision: 2,
 					significand: signed(middle / 1e+02),
 				})
@@ -330,12 +334,12 @@ impl TryFrom<f64> for Signifix {
 			let upper = scaled(1e+01);
 			if upper < 1e+04 {
 				Ok(Signifix {
-					prefix: symbol[prefix],
+					prefix: SYMBOL[prefix],
 					precision: 1,
 					significand: signed(upper / 1e+01),
 				})
 			} else {
-				if let Some(&symbol) = symbol.get(prefix + 1) {
+				if let Some(&symbol) = SYMBOL.get(prefix + 1) {
 					Ok(Signifix {
 						prefix: symbol,
 						precision: 3,
