@@ -197,6 +197,12 @@ pub struct Signifix {
 
 impl Eq for Signifix {}
 
+/// Number of resulting characters when no sign or whitespace is prefixed.
+pub const MINLEN: usize = 7;
+
+/// Number of resulting characters when a sign or whitespace is prefixed.
+pub const MAXLEN: usize = 8;
+
 /// Metric unit prefix factors from 1e-24 to 1e+24 indexed from 0 to 16.
 pub const FACTOR: [f64; 17] = [
 	1e-24, 1e-21, 1e-18, 1e-15, 1e-12, 1e-09, 1e-06, 1e-03,
