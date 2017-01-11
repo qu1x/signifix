@@ -442,8 +442,8 @@ mod tests {
 	}
 	#[test]
 	fn upper_prefix_round() {
-		assert_eq!(fmt_def(999.9499999999998e+03).ok(), Some("999.9 k".into()));
-		assert_eq!(fmt_def(999.9499999999999e+03).ok(), Some("1.000 M".into()));
+		assert_eq!(fmt_def(0.999949e+06).ok(), Some("999.9 k".into()));
+		assert_eq!(fmt_def(0.999951e+06).ok(), Some("1.000 M".into()));
 	}
 	#[test]
 	fn fp_category_safety() {
