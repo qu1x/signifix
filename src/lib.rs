@@ -120,7 +120,9 @@
 //! assert_eq!(format_diff(27_473, 46_839).ok(), Some("-19.37 kB".into()));
 //! ```
 
+#![feature(field_init_shorthand)]
 #![feature(try_from)]
+
 use std::convert::TryFrom;
 
 /// An error arising from this crate's `TryFrom` trait implementation for its
@@ -187,8 +189,8 @@ pub type Result<T> = std::result::Result<T, Error>;
 /// to align with negative numbers.
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Signifix {
-	/// Automatically chosen metric unit prefix ranging from y to Y.
-	pub prefix: char,
+	/// Automatically chosen metric unit prefix index ranging from 0 to 16.
+	pub prefix: usize,
 	/// Appropriately adjusted floating point precision ranging from 1 to 3.
 	pub precision: usize,
 	/// Metrically normalized signed significand ranging from ±1.000 to ±999.9.
@@ -324,14 +326,14 @@ impl TryFrom<f64> for Signifix {
 					Err(Error::OutOfLowerBound(number))
 				} else {
 					Ok(Signifix {
-						prefix: SYMBOL[prefix],
+						prefix,
 						precision: 3,
 						significand: signed(lower / 1e+03),
 					})
 				}
 			} else {
 				Ok(Signifix {
-					prefix: SYMBOL[prefix],
+					prefix,
 					precision: 2,
 					significand: signed(middle / 1e+02),
 				})
@@ -340,14 +342,15 @@ impl TryFrom<f64> for Signifix {
 			let upper = scaled(1e+01);
 			if upper < 1e+04 {
 				Ok(Signifix {
-					prefix: SYMBOL[prefix],
+					prefix,
 					precision: 1,
 					significand: signed(upper / 1e+01),
 				})
 			} else {
-				if let Some(&symbol) = SYMBOL.get(prefix + 1) {
+				let prefix = prefix + 1;
+				if prefix < FACTOR.len() {
 					Ok(Signifix {
-						prefix: symbol,
+						prefix,
 						precision: 3,
 						significand: signed(1e+00),
 					})
@@ -367,14 +370,14 @@ impl std::fmt::Display for Signifix {
 	fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 		if f.sign_plus() {
 			write!(f, "{:+.*} {}", self.precision,
-				self.significand, self.prefix)
+				self.significand, SYMBOL[self.prefix])
 		} else
 		if f.alternate() && !self.significand.is_sign_negative() {
 			write!(f, " {:.*} {}", self.precision,
-				self.significand, self.prefix)
+				self.significand, SYMBOL[self.prefix])
 		} else {
 			write!(f, "{:.*} {}", self.precision,
-				self.significand, self.prefix)
+				self.significand, SYMBOL[self.prefix])
 		}
 	}
 }
