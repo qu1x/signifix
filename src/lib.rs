@@ -199,6 +199,23 @@ pub struct Signifix {
 
 impl Eq for Signifix {}
 
+impl Ord for Signifix {
+	fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+		let ordering = self.prefix.cmp(&other.prefix);
+		if ordering == std::cmp::Ordering::Equal {
+			self.significand.partial_cmp(&other.significand).unwrap()
+		} else {
+			ordering
+		}
+	}
+}
+
+impl PartialOrd for Signifix {
+	fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+		Some(self.cmp(other))
+	}
+}
+
 /// Number of resulting characters when no sign or whitespace is prefixed.
 pub const MIN_LEN: usize = 7;
 
@@ -458,5 +475,12 @@ mod tests {
 			Some(Error::OutOfUpperBound(std::f64::INFINITY)));
 		assert_eq!(fmt_def(std::f64::NAN).err(),
 			Some(Error::Nan));
+	}
+	#[test]
+	fn ord_implementation() {
+		assert!(Signifix::try_from(1e+03).unwrap()
+			< Signifix::try_from(1e+06).unwrap());
+		assert!(Signifix::try_from(1e+03).unwrap()
+			< Signifix::try_from(2e+03).unwrap());
 	}
 }
