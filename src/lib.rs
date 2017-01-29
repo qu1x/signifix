@@ -1,6 +1,6 @@
 // This file is part of Signifix, see <https://qu1x.org/signifix>.
 //
-// Copyright (c) 2016 Rouven Spreckels <n3vu0r@qu1x.org>
+// Copyright (c) 2016, 2017 Rouven Spreckels <n3vu0r@qu1x.org>
 //
 // Signifix is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License version 3
@@ -30,7 +30,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! signifix = "0.2.0"
+//! signifix = "0.3.0"
 //! ```
 //!
 //! and this to your crate root:
@@ -48,7 +48,6 @@
 //!
 //! ```
 //! # #![feature(try_from)]
-//! #
 //! use std::convert::TryFrom; // Until stabilized.
 //!
 //! use signifix::{Signifix, Result};
@@ -74,7 +73,6 @@
 //!
 //! ```
 //! # #![feature(try_from)]
-//! #
 //! use std::convert::TryFrom; // Until stabilized.
 //!
 //! use signifix::{Signifix, Result};
@@ -93,7 +91,6 @@
 //!
 //! ```
 //! # #![feature(try_from)]
-//! #
 //! use std::convert::TryFrom; // Until stabilized.
 //!
 //! use signifix::{Signifix, Result};
@@ -111,7 +108,6 @@
 //!
 //! ```
 //! # #![feature(try_from)]
-//! #
 //! use std::convert::TryFrom; // Until stabilized.
 //!
 //! use signifix::{Signifix, Result};

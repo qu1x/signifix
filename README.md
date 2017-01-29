@@ -7,11 +7,11 @@ Number Formatter of Fixed Significance with Metric Unit Prefix
 [![Downloads](https://img.shields.io/crates/d/signifix.svg)](https://crates.io/crates/signifix)
 [![License](https://img.shields.io/crates/l/signifix.svg)](https://www.gnu.org/licenses/lgpl-3.0.en.html)
 
-[Documentation](https://docs.rs/signifix/0.2.0/signifix/)
+[Documentation](https://docs.rs/signifix/0.3.0/signifix/)
 
 Signifix guarantees a fixed number of significant figures and a fixed number
 of resulting characters by automatically choosing the metric unit prefix and
-appropriately adjusting the floating point precision.
+appropriately adjusting the decimal point position.
 
 ## Usage
 
@@ -21,7 +21,7 @@ used by adding `signifix` to the dependencies in your project's
 
 ```toml
 [dependencies]
-signifix = "0.2.0"
+signifix = "0.3.0"
 ```
 
 and this to your crate root:
@@ -71,8 +71,8 @@ let format_rate = |bytes, seconds| -> Result<String> {
 };
 
 assert_eq!(format_rate(42_667, 300).ok(), Some("142.2  B/s".into()));
-assert_eq!(format_rate(42_667,  30).ok(), Some("1.422 kB/s".into()));
-assert_eq!(format_rate(42_667,   3).ok(), Some("14.22 kB/s".into()));
+assert_eq!(format_rate(42_667, 030).ok(), Some("1.422 kB/s".into()));
+assert_eq!(format_rate(42_667, 003).ok(), Some("14.22 kB/s".into()));
 ```
 
 Or to monitor a measured quantity like an electrical current including its

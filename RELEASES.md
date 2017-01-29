@@ -1,8 +1,16 @@
+# Version 0.3.0 (2017-01-31)
+
+* Replaced public fields by methods.
+* Shrank Signifix type from 24 to 4 B.
+* Implemented `Ord` trait.
+* Added public constants `MIN_LEN` and `MAX_LEN`.
+* Added public constants `SYMBOL` and `FACTOR`.
+
 # Version 0.2.0 (2016-12-17)
 
-* Covered isize/usize and i64/u64.
+* Covered `isize`/`usize` and `i64`/`u64`.
 * Replaced methods by public fields.
-* Added NaN error variant.
+* Added `Error::Nan` variant.
 
 # Version 0.1.0 (2016-12-04)
 
