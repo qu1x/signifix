@@ -1,7 +1,7 @@
 # Version 0.3.0 (2017-01-31)
 
 * Replaced public fields by methods.
-* Shrank Signifix type from 24 to 4 B.
+* Shrank `Signifix` type from 24 to 4 B.
 * Implemented `Ord` trait.
 * Added public constants `MIN_LEN` and `MAX_LEN`.
 * Added public constants `SYMBOL` and `FACTOR`.
