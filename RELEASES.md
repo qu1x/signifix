@@ -1,5 +1,6 @@
 # Version 0.3.0 (2017-01-31)
 
+* Covered `i128`/`u128`.
 * Replaced public fields by methods.
 * Shrank `Signifix` type from 24 to 4 B.
 * Implemented `Ord` trait.

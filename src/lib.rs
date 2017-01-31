@@ -121,6 +121,7 @@
 
 #![deny(missing_docs)]
 
+#![feature(i128_type)]
 #![feature(try_from)]
 
 use std::convert::TryFrom;
@@ -299,8 +300,8 @@ macro_rules! try_from {
 	);
 }
 
-try_from! { i8, i16, i32, i64, isize }
-try_from! { u8, u16, u32, u64, usize }
+try_from! { i8, i16, i32, i64, i128, isize }
+try_from! { u8, u16, u32, u64, u128, usize }
 
 try_from! { f32 }
 
