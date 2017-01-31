@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with Signifix. If not, see <https://www.gnu.org/licenses>.
 
-#![deny(missing_docs)]
-
 //! Number Formatter of Fixed Significance with Metric Unit Prefix
 //!
 //! Signifix guarantees a fixed number of significant figures and a fixed number
@@ -36,6 +34,7 @@
 //! and this to your crate root:
 //!
 //! ```
+//! # #![allow(unused_attributes)]
 //! #![feature(try_from)] // Until stabilized.
 //!
 //! extern crate signifix;
@@ -119,6 +118,8 @@
 //! assert_eq!(format_diff(78_346, 57_393).ok(), Some("+20.95 kB".into()));
 //! assert_eq!(format_diff(27_473, 46_839).ok(), Some("-19.37 kB".into()));
 //! ```
+
+#![deny(missing_docs)]
 
 #![feature(try_from)]
 
@@ -208,6 +209,12 @@ pub struct Signifix {
 
 impl Eq for Signifix {}
 
+impl PartialOrd for Signifix {
+	fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+		Some(self.cmp(other))
+	}
+}
+
 impl Ord for Signifix {
 	fn cmp(&self, other: &Self) -> Ordering {
 		let mut ordering = self.prefix.cmp(&other.prefix);
@@ -218,12 +225,6 @@ impl Ord for Signifix {
 			}
 		}
 		ordering
-	}
-}
-
-impl PartialOrd for Signifix {
-	fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-		Some(self.cmp(other))
 	}
 }
 
