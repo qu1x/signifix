@@ -403,15 +403,15 @@ impl TryFrom<f64> for Signifix {
 impl Display for Signifix {
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result {
 		if f.sign_plus() {
-			write!(f, "{:+.*} {}",
-				self.exponent(), self.significand(), self.symbol())
+			f.pad(&format!("{:+.*} {}",
+				self.exponent(), self.significand(), self.symbol()))
 		} else
 		if f.alternate() && self.numerator().is_positive() {
-			write!(f, " {:.*} {}",
-				self.exponent(), self.significand(), self.symbol())
+			f.pad(&format!(" {:.*} {}",
+				self.exponent(), self.significand(), self.symbol()))
 		} else {
-			write!(f, "{:.*} {}",
-				self.exponent(), self.significand(), self.symbol())
+			f.pad(&format!("{:.*} {}",
+				self.exponent(), self.significand(), self.symbol()))
 		}
 	}
 }
