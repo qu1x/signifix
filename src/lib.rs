@@ -70,21 +70,22 @@
 //! This is useful to smoothly refresh a transfer rate inside a terminal:
 //!
 //! ```
-//! #![feature(i128_type)]
+//! #![feature(i128_type)] // Until stabilized.
 //!
 //! # #![feature(try_from)]
 //! use std::convert::TryFrom; // Until stabilized.
 //!
 //! use std::f64;
-//! use signifix::Signifix;
+//! use signifix::{Signifix, Error, MIN_LEN};
 //!
 //! let format_rate = |bytes: u128, nanoseconds: u128| -> String {
-//! 	use signifix::Error;
-//! 	match Signifix::try_from(bytes as f64 / nanoseconds as f64 * 1e+09) {
+//! 	let bytes_per_second = bytes as f64 / nanoseconds as f64 * 1e+09;
+//! 	let unit = "B/s";
+//! 	let rate = match Signifix::try_from(bytes_per_second) {
 //! 		Ok(rate) => if rate.factor() < 1e+00 {
 //! 			" - slow - ".into() // instead of mB/s, µB/s, ...
 //! 		} else {
-//! 			format!("{}B/s", rate) // normal rate
+//! 			format!("{}{}", rate, unit) // normal rate
 //! 		},
 //! 		Err(case) => match case {
 //! 			Error::OutOfLowerBound(rate) => if rate == 0f64 {
@@ -99,7 +100,9 @@
 //! 			},
 //! 			Error::Nan => " - ---- - ", // zero bytes in zero nanoseconds
 //! 		}.into(),
-//! 	}
+//! 	};
+//! 	assert_eq!(rate.chars().count(), MIN_LEN + unit.chars().count());
+//! 	rate
 //! };
 //!
 //! assert_eq!(format_rate(42_667, 300_000_000_000), "142.2  B/s");
