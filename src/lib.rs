@@ -34,7 +34,6 @@
 //! and this to your crate root:
 //!
 //! ```
-//! # #![allow(unused_attributes)]
 //! #![feature(try_from)] // Until stabilized.
 //!
 //! extern crate signifix;
