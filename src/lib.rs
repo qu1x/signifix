@@ -70,18 +70,43 @@
 //! This is useful to smoothly refresh a transfer rate inside a terminal:
 //!
 //! ```
+//! #![feature(i128_type)]
+//!
 //! # #![feature(try_from)]
 //! use std::convert::TryFrom; // Until stabilized.
 //!
-//! use signifix::{Signifix, Result};
+//! use std::f64;
+//! use signifix::Signifix;
 //!
-//! let format_rate = |bytes, seconds| -> Result<String> {
-//! 	Ok(format!("{}B/s", Signifix::try_from(bytes as f64 / seconds as f64)?))
+//! let format_rate = |bytes: u128, nanoseconds: u128| -> String {
+//! 	use signifix::Error;
+//! 	match Signifix::try_from(bytes as f64 / nanoseconds as f64 * 1e+09) {
+//! 		Ok(rate) => if rate.factor() < 1e+00 {
+//! 			" - slow - ".into() // instead of mB/s, µB/s, ...
+//! 		} else {
+//! 			format!("{}B/s", rate) // normal rate
+//! 		},
+//! 		Err(case) => match case {
+//! 			Error::OutOfLowerBound(rate) => if rate == 0f64 {
+//! 				" - idle - " // no progress at all
+//! 			} else {
+//! 				" - slow - " // almost no progress
+//! 			},
+//! 			Error::OutOfUpperBound(rate) => if rate == f64::INFINITY {
+//! 				" - ---- - " // zero nanoseconds
+//! 			} else {
+//! 				" - fast - " // awkwardly fast
+//! 			},
+//! 			Error::Nan => " - ---- - ", // zero bytes in zero nanoseconds
+//! 		}.into(),
+//! 	}
 //! };
 //!
-//! assert_eq!(format_rate(42_667, 300).ok(), Some("142.2  B/s".into()));
-//! assert_eq!(format_rate(42_667, 030).ok(), Some("1.422 kB/s".into()));
-//! assert_eq!(format_rate(42_667, 003).ok(), Some("14.22 kB/s".into()));
+//! assert_eq!(format_rate(42_667, 300_000_000_000), "142.2  B/s");
+//! assert_eq!(format_rate(42_667, 030_000_000_000), "1.422 kB/s");
+//! assert_eq!(format_rate(42_667, 003_000_000_000), "14.22 kB/s");
+//! assert_eq!(format_rate(00_000, 003_000_000_000), " - idle - ");
+//! assert_eq!(format_rate(42_667, 000_000_000_000), " - ---- - ");
 //! ```
 //!
 //! Or to monitor a measured quantity like an electrical current including its
@@ -487,8 +512,8 @@ mod tests {
 	}
 	#[test]
 	fn fp_category_safety() {
-		assert_eq!(def(0.0).err(),
-			Some(Error::OutOfLowerBound(0.0)));
+		assert_eq!(def(0f64).err(),
+			Some(Error::OutOfLowerBound(0f64)));
 		assert_eq!(def(f64::NEG_INFINITY).err(),
 			Some(Error::OutOfUpperBound(f64::NEG_INFINITY)));
 		assert_eq!(def(f64::INFINITY).err(),
