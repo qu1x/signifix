@@ -34,7 +34,7 @@
 //! and this to your crate root:
 //!
 //! ```
-//! #![feature(try_from)] // Until stabilized.
+//! #![feature(try_from)] // Until stabilized. Requires nightly Rust.
 //!
 //! extern crate signifix;
 //! ```
@@ -51,7 +51,7 @@
 //! use signifix::{Signifix, Result};
 //!
 //! let format = |number| -> Result<String> {
-//! 	Ok(format!("{}", Signifix::try_from(number)?))
+//! 	Signifix::try_from(number).and_then(|number| Ok(format!("{}", number)))
 //! };
 //!
 //! assert_eq!(format(1e-04).ok(), Some("100.0 µ".into()));
@@ -67,7 +67,7 @@
 //! assert_eq!(format(1e+06).ok(), Some("1.000 M".into()));
 //! ```
 //!
-//! This is useful to smoothly refresh a transfer rate inside a terminal:
+//! This is useful to smoothly refresh a transfer rate within a terminal:
 //!
 //! ```
 //! #![feature(i128_type)] // Until stabilized.
@@ -113,19 +113,22 @@
 //! ```
 //!
 //! Or to monitor a measured quantity like an electrical current including its
-//! direction with an optional space placeholder to align with negative values.
+//! direction with an optional space placeholder to align with negative values:
 //!
 //! ```
 //! # #![feature(try_from)]
 //! use std::convert::TryFrom; // Until stabilized.
 //!
-//! use signifix::{Signifix, Result};
+//! use signifix::{Signifix, Result, Error};
 //!
 //! let format_load = |current| -> Result<String> {
-//! 	Ok(format!("{:#}A", Signifix::try_from(current)?))
+//! 	Signifix::try_from(current).and_then(|c| Ok(format!("{:#}A", c)))
+//! 		.or_else(|e| if let Error::OutOfLowerBound(_) = e
+//! 			{ Ok("     0  A".into()) } else { Err(e) })
 //! };
 //!
 //! assert_eq!(format_load( 1.476e-06).ok(), Some(" 1.476 µA".into()));
+//! assert_eq!(format_load( 0.999e-24).ok(), Some("     0  A".into()));
 //! assert_eq!(format_load(-2.927e-06).ok(), Some("-2.927 µA".into()));
 //! ```
 //!
@@ -139,7 +142,7 @@
 //! use signifix::{Signifix, Result};
 //!
 //! let format_diff = |curr, prev| -> Result<String> {
-//! 	Ok(format!("{:+}B", Signifix::try_from(curr - prev)?))
+//! 	Signifix::try_from(curr - prev).map(|diff| format!("{:+}B", diff))
 //! };
 //!
 //! assert_eq!(format_diff(78_346, 57_393).ok(), Some("+20.95 kB".into()));
