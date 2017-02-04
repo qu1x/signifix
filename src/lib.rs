@@ -28,7 +28,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! signifix = "0.3.0"
+//! signifix = "0.3.1"
 //! ```
 //!
 //! and this to your crate root:

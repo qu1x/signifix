@@ -1,3 +1,7 @@
+# Version 0.3.1 (2017-02-04)
+
+* Fixed missing support for fill/alignment formatting parameters.
+
 # Version 0.3.0 (2017-01-31)
 
 * Covered `i128`/`u128`.
