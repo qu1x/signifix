@@ -236,7 +236,8 @@ pub type Result<T> = result::Result<T, Error>;
 /// number of resulting characters. The format parameter `{}` prefixes negative
 /// numbers with a minus sign. The variant `{:+}` additionally prefixes positive
 /// numbers with a plus sign while the variant `{:#}` uses a whitespace instead
-/// to align with negative numbers. Padding like `{:>8}` is supported as well.
+/// to align with negative numbers. Padding via fill/alignment formatting
+/// parameters like `{:>8}` is supported as well.
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Signifix {
 	numerator: i16,

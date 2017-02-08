@@ -1,7 +1,7 @@
-# Version 0.3.1 (2017-02-05)
+# Version 0.3.1 (2017-02-09)
 
 * Refactored examples.
-* Fixed missing support for fill/alignment formatting parameters.
+* Fixed missing padding support via fill/alignment formatting parameters.
 
 # Version 0.3.0 (2017-01-31)
 
