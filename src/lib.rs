@@ -51,7 +51,7 @@
 //! use signifix::{Signifix, Result};
 //!
 //! let format = |number| -> Result<String> {
-//! 	Signifix::try_from(number).and_then(|number| Ok(format!("{}", number)))
+//! 	Signifix::try_from(number).map(|number| format!("{}", number))
 //! };
 //!
 //! assert_eq!(format(1e-04).ok(), Some("100.0 µ".into()));
@@ -108,6 +108,7 @@
 //! assert_eq!(format_rate(42_667, 300_000_000_000), "142.2  B/s");
 //! assert_eq!(format_rate(42_667, 030_000_000_000), "1.422 kB/s");
 //! assert_eq!(format_rate(42_667, 003_000_000_000), "14.22 kB/s");
+//! assert_eq!(format_rate(00_001, 003_000_000_000), " - slow - ");
 //! assert_eq!(format_rate(00_000, 003_000_000_000), " - idle - ");
 //! assert_eq!(format_rate(42_667, 000_000_000_000), " - ---- - ");
 //! ```
@@ -122,14 +123,16 @@
 //! use signifix::{Signifix, Result, Error};
 //!
 //! let format_load = |current| -> Result<String> {
-//! 	Signifix::try_from(current).and_then(|c| Ok(format!("{:#}A", c)))
-//! 		.or_else(|e| if let Error::OutOfLowerBound(_) = e
-//! 			{ Ok("     0  A".into()) } else { Err(e) })
+//! 	if let Some(current) = current {
+//! 		Signifix::try_from(current).map(|c| format!("{:#}A", c))
+//! 	} else {
+//! 		Ok("     0  A".into())
+//! 	}
 //! };
 //!
-//! assert_eq!(format_load( 1.476e-06).ok(), Some(" 1.476 µA".into()));
-//! assert_eq!(format_load( 0.999e-24).ok(), Some("     0  A".into()));
-//! assert_eq!(format_load(-2.927e-06).ok(), Some("-2.927 µA".into()));
+//! assert_eq!(format_load(Some( 1.476e-06)).ok(), Some(" 1.476 µA".into()));
+//! assert_eq!(format_load(None).ok(),             Some("     0  A".into()));
+//! assert_eq!(format_load(Some(-2.927e-06)).ok(), Some("-2.927 µA".into()));
 //! ```
 //!
 //! In case of displaying a file size difference after modification, a plus sign
@@ -139,13 +142,16 @@
 //! # #![feature(try_from)]
 //! use std::convert::TryFrom; // Until stabilized.
 //!
-//! use signifix::{Signifix, Result};
+//! use signifix::{Signifix, Result, Error};
 //!
 //! let format_diff = |curr, prev| -> Result<String> {
 //! 	Signifix::try_from(curr - prev).map(|diff| format!("{:+}B", diff))
+//! 		.or_else(|e| if e == Error::OutOfLowerBound(0f64)
+//! 			{ Ok("     0  B".into()) } else { Err(e) })
 //! };
 //!
 //! assert_eq!(format_diff(78_346, 57_393).ok(), Some("+20.95 kB".into()));
+//! assert_eq!(format_diff(93_837, 93_837).ok(), Some("     0  B".into()));
 //! assert_eq!(format_diff(27_473, 46_839).ok(), Some("-19.37 kB".into()));
 //! ```
 
