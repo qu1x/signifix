@@ -54,17 +54,17 @@
 //! 	Signifix::try_from(number).map(|number| format!("{}", number))
 //! };
 //!
-//! assert_eq!(format(1e-04).ok(), Some("100.0 µ".into()));
-//! assert_eq!(format(1e-03).ok(), Some("1.000 m".into()));
-//! assert_eq!(format(1e-02).ok(), Some("10.00 m".into()));
-//! assert_eq!(format(1e-01).ok(), Some("100.0 m".into()));
-//! assert_eq!(format(1e+00).ok(), Some("1.000  ".into()));
-//! assert_eq!(format(1e+01).ok(), Some("10.00  ".into()));
-//! assert_eq!(format(1e+02).ok(), Some("100.0  ".into()));
-//! assert_eq!(format(1e+03).ok(), Some("1.000 k".into()));
-//! assert_eq!(format(1e+04).ok(), Some("10.00 k".into()));
-//! assert_eq!(format(1e+05).ok(), Some("100.0 k".into()));
-//! assert_eq!(format(1e+06).ok(), Some("1.000 M".into()));
+//! assert_eq!(format(1e-04), Ok("100.0 µ".into()));
+//! assert_eq!(format(1e-03), Ok("1.000 m".into()));
+//! assert_eq!(format(1e-02), Ok("10.00 m".into()));
+//! assert_eq!(format(1e-01), Ok("100.0 m".into()));
+//! assert_eq!(format(1e+00), Ok("1.000  ".into()));
+//! assert_eq!(format(1e+01), Ok("10.00  ".into()));
+//! assert_eq!(format(1e+02), Ok("100.0  ".into()));
+//! assert_eq!(format(1e+03), Ok("1.000 k".into()));
+//! assert_eq!(format(1e+04), Ok("10.00 k".into()));
+//! assert_eq!(format(1e+05), Ok("100.0 k".into()));
+//! assert_eq!(format(1e+06), Ok("1.000 M".into()));
 //! ```
 //!
 //! This is useful to smoothly refresh a transfer rate within a terminal:
@@ -130,9 +130,9 @@
 //! 	}
 //! };
 //!
-//! assert_eq!(format_load(Some( 1.476e-06)).ok(), Some(" 1.476 µA".into()));
-//! assert_eq!(format_load(None).ok(),             Some("     0  A".into()));
-//! assert_eq!(format_load(Some(-2.927e-06)).ok(), Some("-2.927 µA".into()));
+//! assert_eq!(format_load(Some( 1.476e-06)), Ok(" 1.476 µA".into()));
+//! assert_eq!(format_load(None),             Ok("     0  A".into()));
+//! assert_eq!(format_load(Some(-2.927e-06)), Ok("-2.927 µA".into()));
 //! ```
 //!
 //! In case of displaying a file size difference after modification, a plus sign
@@ -150,9 +150,9 @@
 //! 			{ Ok("     0  B".into()) } else { Err(e) })
 //! };
 //!
-//! assert_eq!(format_diff(78_346, 57_393).ok(), Some("+20.95 kB".into()));
-//! assert_eq!(format_diff(93_837, 93_837).ok(), Some("     0  B".into()));
-//! assert_eq!(format_diff(27_473, 46_839).ok(), Some("-19.37 kB".into()));
+//! assert_eq!(format_diff(78_346, 57_393), Ok("+20.95 kB".into()));
+//! assert_eq!(format_diff(93_837, 93_837), Ok("     0  B".into()));
+//! assert_eq!(format_diff(27_473, 46_839), Ok("-19.37 kB".into()));
 //! ```
 
 #![deny(missing_docs)]
@@ -460,88 +460,88 @@ mod tests {
 	use std::mem::size_of;
 
 	fn def(number: f64) -> Result<String> {
-		Ok(format!("{}", Signifix::try_from(number)?))
+		Signifix::try_from(number).map(|number| format!("{}", number))
 	}
 	fn pos(number: f64) -> Result<String> {
-		Ok(format!("{:+}", Signifix::try_from(number)?))
+		Signifix::try_from(number).map(|number| format!("{:+}", number))
 	}
 	fn alt(number: f64) -> Result<String> {
-		Ok(format!("{:#}", Signifix::try_from(number)?))
+		Signifix::try_from(number).map(|number| format!("{:#}", number))
 	}
 
 	#[test]
 	fn metric_unit_prefix() {
-		assert_eq!(def(1e-24).ok(), Some("1.000 y".into()));
-		assert_eq!(def(1e-21).ok(), Some("1.000 z".into()));
-		assert_eq!(def(1e-18).ok(), Some("1.000 a".into()));
-		assert_eq!(def(1e-15).ok(), Some("1.000 f".into()));
-		assert_eq!(def(1e-12).ok(), Some("1.000 p".into()));
-		assert_eq!(def(1e-09).ok(), Some("1.000 n".into()));
-		assert_eq!(def(1e-06).ok(), Some("1.000 µ".into()));
-		assert_eq!(def(1e-03).ok(), Some("1.000 m".into()));
-		assert_eq!(def(1e+00).ok(), Some("1.000  ".into()));
-		assert_eq!(def(1e+03).ok(), Some("1.000 k".into()));
-		assert_eq!(def(1e+06).ok(), Some("1.000 M".into()));
-		assert_eq!(def(1e+09).ok(), Some("1.000 G".into()));
-		assert_eq!(def(1e+12).ok(), Some("1.000 T".into()));
-		assert_eq!(def(1e+15).ok(), Some("1.000 P".into()));
-		assert_eq!(def(1e+18).ok(), Some("1.000 E".into()));
-		assert_eq!(def(1e+21).ok(), Some("1.000 Z".into()));
-		assert_eq!(def(1e+24).ok(), Some("1.000 Y".into()));
+		assert_eq!(def(1e-24), Ok("1.000 y".into()));
+		assert_eq!(def(1e-21), Ok("1.000 z".into()));
+		assert_eq!(def(1e-18), Ok("1.000 a".into()));
+		assert_eq!(def(1e-15), Ok("1.000 f".into()));
+		assert_eq!(def(1e-12), Ok("1.000 p".into()));
+		assert_eq!(def(1e-09), Ok("1.000 n".into()));
+		assert_eq!(def(1e-06), Ok("1.000 µ".into()));
+		assert_eq!(def(1e-03), Ok("1.000 m".into()));
+		assert_eq!(def(1e+00), Ok("1.000  ".into()));
+		assert_eq!(def(1e+03), Ok("1.000 k".into()));
+		assert_eq!(def(1e+06), Ok("1.000 M".into()));
+		assert_eq!(def(1e+09), Ok("1.000 G".into()));
+		assert_eq!(def(1e+12), Ok("1.000 T".into()));
+		assert_eq!(def(1e+15), Ok("1.000 P".into()));
+		assert_eq!(def(1e+18), Ok("1.000 E".into()));
+		assert_eq!(def(1e+21), Ok("1.000 Z".into()));
+		assert_eq!(def(1e+24), Ok("1.000 Y".into()));
 	}
 	#[test]
 	fn fixed_significance() {
-		assert_eq!(def(1.234e+02).ok(), Some("123.4  ".into()));
-		assert_eq!(def(1.234e+03).ok(), Some("1.234 k".into()));
-		assert_eq!(def(1.234e+04).ok(), Some("12.34 k".into()));
-		assert_eq!(def(1.234e+05).ok(), Some("123.4 k".into()));
-		assert_eq!(def(1.234e+06).ok(), Some("1.234 M".into()));
+		assert_eq!(def(1.234e+02), Ok("123.4  ".into()));
+		assert_eq!(def(1.234e+03), Ok("1.234 k".into()));
+		assert_eq!(def(1.234e+04), Ok("12.34 k".into()));
+		assert_eq!(def(1.234e+05), Ok("123.4 k".into()));
+		assert_eq!(def(1.234e+06), Ok("1.234 M".into()));
 	}
 	#[test]
 	fn formatting_options() {
-		assert_eq!(def(-1e+00).ok(), Some("-1.000  ".into()));
-		assert_eq!(def( 1e+00).ok(), Some( "1.000  ".into()));
-		assert_eq!(pos(-1e+00).ok(), Some("-1.000  ".into()));
-		assert_eq!(pos( 1e+00).ok(), Some("+1.000  ".into()));
-		assert_eq!(alt(-1e+00).ok(), Some("-1.000  ".into()));
-		assert_eq!(alt( 1e+00).ok(), Some(" 1.000  ".into()));
+		assert_eq!(def(-1e+00), Ok("-1.000  ".into()));
+		assert_eq!(def( 1e+00), Ok( "1.000  ".into()));
+		assert_eq!(pos(-1e+00), Ok("-1.000  ".into()));
+		assert_eq!(pos( 1e+00), Ok("+1.000  ".into()));
+		assert_eq!(alt(-1e+00), Ok("-1.000  ".into()));
+		assert_eq!(alt( 1e+00), Ok(" 1.000  ".into()));
 	}
 	#[test]
 	fn lower_prefix_bound() {
-		assert_eq!(def(-0.99951e-24).ok(), Some("-1.000 y".into()));
-		assert_eq!(def(-0.99949e-24).err(),
-			Some(Error::OutOfLowerBound(-0.99949e-24)));
+		assert_eq!(def(-0.99951e-24), Ok("-1.000 y".into()));
+		assert_eq!(def(-0.99949e-24),
+			Err(Error::OutOfLowerBound(-0.99949e-24)));
 	}
 	#[test]
 	fn upper_prefix_bound() {
-		assert_eq!(def(-0.999949e+27).ok(), Some("-999.9 Y".into()));
-		assert_eq!(def(-0.999951e+27).err(),
-			Some(Error::OutOfUpperBound(-0.999951e+27)));
+		assert_eq!(def(-0.999949e+27), Ok("-999.9 Y".into()));
+		assert_eq!(def(-0.999951e+27),
+			Err(Error::OutOfUpperBound(-0.999951e+27)));
 	}
 	#[test]
 	fn upper_prefix_round() {
-		assert_eq!(def(0.999949e+06).ok(), Some("999.9 k".into()));
-		assert_eq!(def(0.999951e+06).ok(), Some("1.000 M".into()));
+		assert_eq!(def(0.999949e+06), Ok("999.9 k".into()));
+		assert_eq!(def(0.999951e+06), Ok("1.000 M".into()));
 	}
 	#[test]
 	fn fp_category_safety() {
-		assert_eq!(def(0f64).err(),
-			Some(Error::OutOfLowerBound(0f64)));
-		assert_eq!(def(f64::NEG_INFINITY).err(),
-			Some(Error::OutOfUpperBound(f64::NEG_INFINITY)));
-		assert_eq!(def(f64::INFINITY).err(),
-			Some(Error::OutOfUpperBound(f64::INFINITY)));
-		assert_eq!(def(f64::NAN).err(),
-			Some(Error::Nan));
+		assert_eq!(def(0f64),
+			Err(Error::OutOfLowerBound(0f64)));
+		assert_eq!(def(f64::NEG_INFINITY),
+			Err(Error::OutOfUpperBound(f64::NEG_INFINITY)));
+		assert_eq!(def(f64::INFINITY),
+			Err(Error::OutOfUpperBound(f64::INFINITY)));
+		assert_eq!(def(f64::NAN),
+			Err(Error::Nan));
 	}
 	#[test]
 	fn ord_implementation() {
-		assert!(Signifix::try_from(1e+03).ok()
-			< Signifix::try_from(1e+06).ok());
-		assert!(Signifix::try_from(1e+01).ok()
-			< Signifix::try_from(1e+02).ok());
-		assert!(Signifix::try_from(1e+03).ok()
-			< Signifix::try_from(2e+03).ok());
+		assert!(Signifix::try_from(1e+03).unwrap()
+			< Signifix::try_from(1e+06).unwrap());
+		assert!(Signifix::try_from(1e+01).unwrap()
+			< Signifix::try_from(1e+02).unwrap());
+		assert!(Signifix::try_from(1e+03).unwrap()
+			< Signifix::try_from(2e+03).unwrap());
 	}
 	#[test]
 	fn mem_size_of_struct() {
