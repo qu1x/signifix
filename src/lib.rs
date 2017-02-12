@@ -124,7 +124,7 @@
 //!
 //! let format_load = |current| -> Result<String> {
 //! 	if let Some(current) = current {
-//! 		Signifix::try_from(current).map(|c| format!("{:#}A", c))
+//! 		Signifix::try_from(current).map(|current| format!("{:#}A", current))
 //! 	} else {
 //! 		Ok("     0  A".into())
 //! 	}
@@ -146,8 +146,8 @@
 //!
 //! let format_diff = |curr, prev| -> Result<String> {
 //! 	Signifix::try_from(curr - prev).map(|diff| format!("{:+}B", diff))
-//! 		.or_else(|e| if e == Error::OutOfLowerBound(0f64)
-//! 			{ Ok("     0  B".into()) } else { Err(e) })
+//! 		.or_else(|case| if case == Error::OutOfLowerBound(0f64)
+//! 			{ Ok("     0  B".into()) } else { Err(case) })
 //! };
 //!
 //! assert_eq!(format_diff(78_346, 57_393), Ok("+20.95 kB".into()));
