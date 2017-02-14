@@ -1,6 +1,14 @@
-# Version 0.3.1 (2017-02-09)
+# Version 0.4.0 (2017-02-14)
 
-* Refactored examples.
+* Refactored examples and documentation.
+* Reassigned alternate flag to alternate notation, thanks to padding support.
+* Complemented `DEF_MIN_LEN`/`DEF_MAX_LEN` with `ALT_MIN_LEN`/`ALT_MAX_LEN`.
+* Renamed `MAX_LEN` to `DEF_MAX_LEN` and `MIN_LEN` to `DEF_MAX_LEN`.
+* Wrapped return value of `symbol()` method in `Option`.
+* Wrapped elements of `SYMBOLS` in `Option` with `' '` becoming `None`.
+* Renamed `SYMBOL` to `SYMBOLS` and `FACTOR` to `FACTORS`.
+* Defined Signifix default (`1.234 k`) and alternate (`1k234`) notation.
+* Added `integer()`, `fractional()`, and `parts()` methods.
 * Fixed missing padding support via fill/alignment formatting parameters.
 
 # Version 0.3.0 (2017-01-31)
