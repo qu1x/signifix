@@ -294,20 +294,16 @@ impl Ord for Signifix {
 	}
 }
 
-/// Number of resulting characters in default notation when no sign or
-/// whitespace is prefixed.
+/// Number of characters in default notation when no sign is prefixed.
 pub const DEF_MIN_LEN: usize = 7;
 
-/// Number of resulting characters in default notation when a sign or
-/// whitespace is prefixed.
+/// Number of characters in default notation when a sign is prefixed.
 pub const DEF_MAX_LEN: usize = 8;
 
-/// Number of resulting characters in alternate notation when no sign or
-/// whitespace is prefixed.
+/// Number of characters in alternate notation when no sign is prefixed.
 pub const ALT_MIN_LEN: usize = 5;
 
-/// Number of resulting characters in alternate notation when a sign or
-/// whitespace is prefixed.
+/// Number of characters in alternate notation when a sign is prefixed.
 pub const ALT_MAX_LEN: usize = 6;
 
 /// Metric prefix symbols from `Some('y')` to `Some('m')` indexed from `0` to
