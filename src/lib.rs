@@ -571,10 +571,15 @@ mod tests {
 	}
 	#[test]
 	fn fixed_significance() {
+		assert_eq!(fmt(1.000e+02), Ok(("100.0  ".into(), "100#0".into())));
 		assert_eq!(fmt(1.234e+02), Ok(("123.4  ".into(), "123#4".into())));
+		assert_eq!(fmt(1.000e+03), Ok(("1.000 k".into(), "1k000".into())));
 		assert_eq!(fmt(1.234e+03), Ok(("1.234 k".into(), "1k234".into())));
+		assert_eq!(fmt(1.000e+04), Ok(("10.00 k".into(), "10k00".into())));
 		assert_eq!(fmt(1.234e+04), Ok(("12.34 k".into(), "12k34".into())));
+		assert_eq!(fmt(1.000e+05), Ok(("100.0 k".into(), "100k0".into())));
 		assert_eq!(fmt(1.234e+05), Ok(("123.4 k".into(), "123k4".into())));
+		assert_eq!(fmt(1.000e+06), Ok(("1.000 M".into(), "1M000".into())));
 		assert_eq!(fmt(1.234e+06), Ok(("1.234 M".into(), "1M234".into())));
 	}
 	#[test]
