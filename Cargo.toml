@@ -4,7 +4,7 @@ version = "0.4.0"
 authors = [
 	"Rouven Spreckels <n3vu0r@qu1x.org>",
 ]
-description = "Number Formatter of Fixed Significance with Metric Unit Prefix"
+description = "Number Formatter of Fixed Significance with Metric Prefix"
 documentation = "https://docs.rs/signifix/0.4.0/signifix/"
 homepage = "https://qu1x.org/signifix"
 repository = "https://github.com/qu1x/signifix"
