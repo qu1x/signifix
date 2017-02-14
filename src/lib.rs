@@ -19,9 +19,9 @@
 //! Formats a given number in one of the two Signifix notations
 //! [as defined below](#definition) by
 //!
-//! 1. selecting the appropriate metric prefix and
-//! 2. moving the decimal point position in a way to sustain a fixed number of
-//!    four significant figures.
+//!  1. selecting the appropriate metric prefix and
+//!  2. moving the decimal point position in a way to sustain a fixed number of
+//!     four significant figures.
 //!
 //! # Definition
 //!
@@ -263,9 +263,9 @@ pub type Result<T> = result::Result<T, Error>;
 ///
 /// Interpreted formatting parameters are
 ///
-/// * `#` to indicate the alternate notation,
-/// * `+` to prefix positive numbers with a plus sign,
-/// * `fill`, `alignment`, and `width` to pad or align numbers.
+///   * `#` to indicate the alternate notation,
+///   * `+` to prefix positive numbers with a plus sign,
+///   * `fill`, `alignment`, and `width` to pad or align numbers.
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Signifix {
 	numerator: i16,

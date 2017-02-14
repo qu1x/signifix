@@ -13,9 +13,9 @@
 Formats a given number in one of the two Signifix notations
 [as defined below](#definition) by
 
-1. selecting the appropriate metric prefix and
-2. moving the decimal point position in a way to sustain a fixed number of
-   four significant figures.
+ 1. selecting the appropriate metric prefix and
+ 2. moving the decimal point position in a way to sustain a fixed number of
+    four significant figures.
 
 ## Definition
 
