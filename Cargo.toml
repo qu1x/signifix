@@ -1,11 +1,11 @@
 [package]
 name = "signifix"
-version = "0.4.0"
+version = "0.4.1"
 authors = [
 	"Rouven Spreckels <n3vu0r@qu1x.org>",
 ]
 description = "Number Formatter of Fixed Significance with Metric Prefix"
-documentation = "https://docs.rs/signifix/0.4.0/signifix/"
+documentation = "https://docs.rs/signifix/0.4.1/signifix/"
 homepage = "https://qu1x.org/signifix"
 repository = "https://github.com/qu1x/signifix"
 readme = "README.md"
@@ -16,11 +16,9 @@ keywords = [
 	"unit",
 	"prefix",
 ]
-license = "LGPL-3.0"
+license = "Fair"
 include = [
 	"src/lib.rs",
 	"Cargo.toml",
 	"RELEASES.md",
-	"COPYING",
-	"COPYING.LESSER",
 ]

@@ -1,3 +1,7 @@
+# Version 0.4.1 (2017-02-17)
+
+* Changed license from LGPL-3.0 to Fair.
+
 # Version 0.4.0 (2017-02-14)
 
 * Refactored examples and documentation.

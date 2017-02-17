@@ -5,10 +5,10 @@
 [![Build Status](https://travis-ci.org/qu1x/signifix.svg?branch=master)](https://travis-ci.org/qu1x/signifix)
 [![Version](https://img.shields.io/crates/v/signifix.svg)](https://crates.io/crates/signifix)
 [![Downloads](https://img.shields.io/crates/d/signifix.svg)](https://crates.io/crates/signifix)
-[![License](https://img.shields.io/crates/l/signifix.svg)](https://www.gnu.org/licenses/lgpl-3.0.en.html)
+[![License](https://img.shields.io/crates/l/signifix.svg)](#license)
 [![LoC](https://tokei.rs/b1/github/qu1x/signifix)](https://tokei.rs)
 
-[Documentation](https://docs.rs/signifix/0.4.0/signifix/)
+[Documentation](https://docs.rs/signifix/0.4.1/signifix/)
 
 Formats a given number in one of the two Signifix notations
 [as defined below](#definition) by
@@ -46,7 +46,7 @@ used by adding `signifix` to the dependencies in your project's
 
 ```toml
 [dependencies]
-signifix = "0.4.0"
+signifix = "0.4.1"
 ```
 
 and this to your crate root:
@@ -170,3 +170,13 @@ assert_eq!(format_diff(78_346, 57_393), Ok("+20k95".into()));
 assert_eq!(format_diff(93_837, 93_837), Ok("=const".into()));
 assert_eq!(format_diff(27_473, 36_839), Ok("-9k366".into()));
 ```
+
+## License
+
+Copyright (c) 2016, 2017 Rouven Spreckels <n3vu0r@qu1x.org>
+
+Usage of the works is permitted provided that
+this instrument is retained with the works, so that
+any entity that uses the works is notified of this instrument.
+
+DISCLAIMER: THE WORKS ARE WITHOUT WARRANTY.

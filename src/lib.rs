@@ -1,18 +1,10 @@
-// This file is part of Signifix, see <https://qu1x.org/signifix>.
-//
 // Copyright (c) 2016, 2017 Rouven Spreckels <n3vu0r@qu1x.org>
 //
-// Signifix is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License version 3
-// as published by the Free Software Foundation on 29 June 2007.
+// Usage of the works is permitted provided that
+// this instrument is retained with the works, so that
+// any entity that uses the works is notified of this instrument.
 //
-// Signifix is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with Signifix. If not, see <https://www.gnu.org/licenses>.
+// DISCLAIMER: THE WORKS ARE WITHOUT WARRANTY.
 
 //! **Number Formatter of Fixed Significance with Metric Prefix**
 //!
@@ -52,7 +44,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! signifix = "0.4.0"
+//! signifix = "0.4.1"
 //! ```
 //!
 //! and this to your crate root:
