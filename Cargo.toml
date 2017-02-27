@@ -1,24 +1,34 @@
 [package]
 name = "signifix"
-version = "0.4.1"
+version = "0.5.0"
 authors = [
 	"Rouven Spreckels <n3vu0r@qu1x.org>",
 ]
-description = "Number Formatter of Fixed Significance with Metric Prefix"
-documentation = "https://docs.rs/signifix/0.4.1/signifix/"
+description = """
+Number Formatter of Fixed Significance with Metric or Binary Prefix"""
+documentation = "https://docs.rs/signifix/0.5.0/signifix/"
 homepage = "https://qu1x.org/signifix"
 repository = "https://github.com/qu1x/signifix"
 readme = "README.md"
 keywords = [
-	"number",
-	"format",
-	"significant",
-	"unit",
-	"prefix",
+	"number-formatter",
+	"fixed-significance",
+	"metric-prefix",
+	"binary-prefix",
+	"unit-prefix",
+]
+categories = [
+	"value-formatting",
 ]
 license = "Fair"
 include = [
 	"src/lib.rs",
+	"src/metric.rs",
+	"src/binary.rs",
 	"Cargo.toml",
+	"README.md",
 	"RELEASES.md",
 ]
+
+[badges]
+travis-ci = { repository = "qu1x/signifix" }
