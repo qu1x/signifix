@@ -38,10 +38,10 @@ impl Display for Error {
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result {
 		match *self {
 			Error::OutOfLowerBound(number) =>
-				write!(f, "{} for number {:+.3e}",
+				write!(f, "{} for number {:.3E}",
 					error::Error::description(self), number),
 			Error::OutOfUpperBound(number) =>
-				write!(f, "{} for number {:+.3e}",
+				write!(f, "{} for number {:.3E}",
 					error::Error::description(self), number),
 			Error::Nan =>
 				write!(f, "{}",
