@@ -109,15 +109,15 @@ pub const ALT_MIN_LEN: usize = 5;
 /// Number of characters in alternate notation when a sign is prefixed.
 pub const ALT_MAX_LEN: usize = 6;
 
-/// Metric prefix symbols from `Some('y')` to `Some('m')` indexed from `0` to
-/// `7` and from `Some('k')` to `Some('Y')` indexed from `9` to `16`, or `None`
+/// Metric prefix symbols from `Some("y")` to `Some("m")` indexed from `0` to
+/// `7` and from `Some("k")` to `Some("Y")` indexed from `9` to `16`, or `None`
 /// indexed at `8`.
-pub const SYMBOLS: [Option<char>; 17] = [
-	Some('y'), Some('z'), Some('a'), Some('f'),
-	Some('p'), Some('n'), Some('µ'), Some('m'),
+pub const SYMBOLS: [Option<&'static str>; 17] = [
+	Some("y"), Some("z"), Some("a"), Some("f"),
+	Some("p"), Some("n"), Some("µ"), Some("m"),
 	None,
-	Some('k'), Some('M'), Some('G'), Some('T'),
-	Some('P'), Some('E'), Some('Z'), Some('Y'),
+	Some("k"), Some("M"), Some("G"), Some("T"),
+	Some("P"), Some("E"), Some("Z"), Some("Y"),
 ];
 
 /// Metric prefix factors from `1E-24` to `1E-03` indexed from `0` to `7` and
@@ -173,8 +173,8 @@ impl Signifix {
 		self.prefix.into()
 	}
 
-	/// Symbol of metric prefix from `Some('y')` to `Some('Y')`, or `None`.
-	pub fn symbol(&self) -> Option<char> {
+	/// Symbol of metric prefix from `Some("y")` to `Some("Y")`, or `None`.
+	pub fn symbol(&self) -> Option<&'static str> {
 		SYMBOLS[self.prefix()]
 	}
 
@@ -289,12 +289,12 @@ impl Display for Signifix {
 		let sign = if self.numerator().is_negative() { "-" } else
 			if f.sign_plus() { "+" } else { "" };
 		if f.alternate() {
-			let symbol = self.symbol().unwrap_or('#');
+			let symbol = self.symbol().unwrap_or("#");
 			let (integer, fractional) = self.parts();
 			f.pad(&format!("{}{}{}{:04$}",
 				sign, integer.abs(), symbol, fractional, self.exponent()))
 		} else {
-			let symbol = self.symbol().unwrap_or(' ');
+			let symbol = self.symbol().unwrap_or(" ");
 			f.pad(&format!("{}{:.*} {}",
 				sign, self.exponent(), self.significand().abs(), symbol))
 		}

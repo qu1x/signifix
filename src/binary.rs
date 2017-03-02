@@ -101,12 +101,12 @@ pub const DEF_MIN_LEN: usize = 8;
 /// Number of characters in default notation when a sign is prefixed.
 pub const DEF_MAX_LEN: usize = 9;
 
-/// Binary prefix symbols exclusive the `i` from `Some('K')` to `Some('Y')`
-/// indexed from `1` to `8`, or `None` indexed at `0`.
-pub const SYMBOLS: [Option<char>; 9] = [
+/// Binary prefix symbols from `Some("Ki")` to `Some("Yi")` indexed from `1` to
+/// `8`, or `None` indexed at `0`.
+pub const SYMBOLS: [Option<&'static str>; 9] = [
 	None,
-	Some('K'), Some('M'), Some('G'), Some('T'),
-	Some('P'), Some('E'), Some('Z'), Some('Y'),
+	Some("Ki"), Some("Mi"), Some("Gi"), Some("Ti"),
+	Some("Pi"), Some("Ei"), Some("Zi"), Some("Yi"),
 ];
 
 /// Binary prefix factors from `1 024 ^ 1` to `1 024 ^ 8` indexed from `1` to
@@ -162,9 +162,8 @@ impl Signifix {
 		self.prefix.into()
 	}
 
-	/// Symbol of binary prefix exclusive the `i` from `Some('K')` to
-	/// `Some('Y')`, or `None`.
-	pub fn symbol(&self) -> Option<char> {
+	/// Symbol of binary prefix from `Some("Ki")` to `Some("Yi")`, or `None`.
+	pub fn symbol(&self) -> Option<&'static str> {
 		SYMBOLS[self.prefix()]
 	}
 
@@ -271,8 +270,7 @@ impl Display for Signifix {
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result {
 		let sign = if self.numerator().is_negative() { "-" } else
 			if f.sign_plus() { "+" } else { "" };
-		let symbol = self.symbol()
-			.map(|symbol| format!("{}i", symbol)).unwrap_or("  ".into());
+		let symbol = self.symbol().unwrap_or("  ".into());
 		if self.exponent() == 0 {
 			f.pad(&format!("{}1 {:03} {}",
 				sign, self.numerator().abs() - 1_000, symbol))
