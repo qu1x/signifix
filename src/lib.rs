@@ -273,27 +273,69 @@ use std::error;
 use std::fmt;
 use std::fmt::{Display, Formatter};
 
-macro_rules! ord {
-	() => (
-		impl PartialOrd for Signifix {
-			fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-				Some(self.cmp(other))
-			}
-		}
+use std::cmp::Ordering;
+use std::cmp::Ordering::Equal;
 
-		impl Ord for Signifix {
-			fn cmp(&self, other: &Self) -> Ordering {
-				let mut ordering = self.prefix.cmp(&other.prefix);
-				if ordering == Equal {
-					ordering = other.exponent.cmp(&self.exponent);
-					if ordering == Equal {
-						ordering = self.numerator.cmp(&other.numerator)
-					}
-				}
-				ordering
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+struct Signifix {
+	numerator: i16,
+	exponent: u8,
+	prefix: u8,
+}
+
+impl PartialOrd for Signifix {
+	fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+		Some(self.cmp(other))
+	}
+}
+
+impl Ord for Signifix {
+	fn cmp(&self, other: &Self) -> Ordering {
+		let mut ordering = self.prefix.cmp(&other.prefix);
+		if ordering == Equal {
+			ordering = other.exponent.cmp(&self.exponent);
+			if ordering == Equal {
+				ordering = self.numerator.cmp(&other.numerator)
 			}
 		}
-	);
+		ordering
+	}
+}
+
+impl Signifix {
+	fn significand(&self) -> f64 {
+		self.numerator() as f64 * [1E-00, 1E-01, 1E-02, 1E-03][self.exponent()]
+	}
+
+	fn numerator(&self) -> i32 {
+		self.numerator.into()
+	}
+
+	fn denominator(&self) -> i32 {
+		[1, 10, 100, 1_000][self.exponent()]
+	}
+
+	fn exponent(&self) -> usize {
+		self.exponent.into()
+	}
+
+	fn integer(&self) -> i32 {
+		self.numerator() / self.denominator()
+	}
+
+	fn fractional(&self) -> i32 {
+		self.numerator().abs() % self.denominator()
+	}
+
+	fn parts(&self) -> (i32, i32) {
+		let trunc = self.numerator() / self.denominator();
+		let fract = self.numerator() - self.denominator() * trunc;
+		(trunc, fract.abs())
+	}
+
+	fn prefix(&self) -> usize {
+		self.prefix.into()
+	}
 }
 
 macro_rules! try_from {

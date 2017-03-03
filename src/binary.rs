@@ -14,9 +14,6 @@ use std::error;
 use std::fmt;
 use std::fmt::{Display, Formatter};
 
-use std::cmp::Ordering;
-use std::cmp::Ordering::Equal;
-
 /// An error arising from this module's `TryFrom` trait implementation for its
 /// `Signifix` type.
 #[derive(Debug, Copy, Clone, PartialEq)]
@@ -84,16 +81,10 @@ pub type Result<T> = result::Result<T, Error>;
 ///
 ///   * `+` to prefix positive numbers with a plus sign,
 ///   * `fill`, `alignment`, and `width` to pad or align numbers.
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Signifix {
-	numerator: i16,
-	exponent: u8,
-	prefix: u8,
+	number: super::Signifix
 }
-
-impl Eq for Signifix {}
-
-ord! {}
 
 /// Number of characters in default notation when no sign is prefixed.
 pub const DEF_MIN_LEN: usize = 8;
@@ -122,44 +113,42 @@ pub const FACTORS: [f64; 9] = [
 impl Signifix {
 	/// Signed significand normalized from `±1.000` over `±999.9` to `±1 023`.
 	pub fn significand(&self) -> f64 {
-		self.numerator() as f64 * [1E-00, 1E-01, 1E-02, 1E-03][self.exponent()]
+		self.number.significand()
 	}
 
 	/// Signed significand numerator from `±1 000` to `±9 999`.
 	pub fn numerator(&self) -> i32 {
-		self.numerator.into()
+		self.number.numerator()
 	}
 
 	/// Significand denominator of either `1`, `10`, `100`, or `1 000`.
 	pub fn denominator(&self) -> i32 {
-		[1, 10, 100, 1_000][self.exponent()]
+		self.number.denominator()
 	}
 
 	/// Exponent of significand denominator of either `0`, `1`, `2`, or `3`.
 	pub fn exponent(&self) -> usize {
-		self.exponent.into()
+		self.number.exponent()
 	}
 
 	/// Signed integer part of significand from `±1` to `±1 023`.
 	pub fn integer(&self) -> i32 {
-		self.numerator() / self.denominator()
+		self.number.integer()
 	}
 
 	/// Fractional part of significand from `0` to `999`.
 	pub fn fractional(&self) -> i32 {
-		self.numerator().abs() % self.denominator()
+		self.number.fractional()
 	}
 
 	/// Signed integer and fractional part at once, in given order.
 	pub fn parts(&self) -> (i32, i32) {
-		let trunc = self.numerator() / self.denominator();
-		let fract = self.numerator() - self.denominator() * trunc;
-		(trunc, fract.abs())
+		self.number.parts()
 	}
 
 	/// Binary prefix as `SYMBOLS` and `FACTORS` array index from `0` to `8`.
 	pub fn prefix(&self) -> usize {
-		self.prefix.into()
+		self.number.prefix()
 	}
 
 	/// Symbol of binary prefix from `Some("Ki")` to `Some("Yi")`, or `None`.
@@ -216,42 +205,52 @@ impl TryFrom<f64> for Signifix {
 				if lower < 1E+03 {
 					Err(Error::OutOfLowerBound(number))
 				} else {
-					Ok(Signifix {
-						numerator: signed(lower) as i16,
-						exponent: 3,
-						prefix: prefix as u8,
+					Ok(Self {
+						number: super::Signifix {
+							numerator: signed(lower) as i16,
+							exponent: 3,
+							prefix: prefix as u8,
+						}
 					})
 				}
 			} else {
-				Ok(Signifix {
-					numerator: signed(middle) as i16,
-					exponent: 2,
-					prefix: prefix as u8,
+				Ok(Self {
+					number: super::Signifix {
+						numerator: signed(middle) as i16,
+						exponent: 2,
+						prefix: prefix as u8,
+					}
 				})
 			}
 		} else {
 			let upper = scaled(1E+01);
 			if upper < 1E+04 {
-				Ok(Signifix {
-					numerator: signed(upper) as i16,
-					exponent: 1,
-					prefix: prefix as u8,
+				Ok(Self {
+					number: super::Signifix {
+						numerator: signed(upper) as i16,
+						exponent: 1,
+						prefix: prefix as u8,
+					}
 				})
 			} else {
 				let above = numerator.round();
 				if above < 1.024E+03 {
-					Ok(Signifix {
-						numerator: signed(above) as i16,
-						exponent: 0,
-						prefix: prefix as u8,
+					Ok(Self {
+						number: super::Signifix {
+							numerator: signed(above) as i16,
+							exponent: 0,
+							prefix: prefix as u8,
+						}
 					})
 				} else {
 					let prefix = prefix + 1;
 					if prefix < FACTORS.len() {
-						Ok(Signifix {
-							numerator: signed(1E+03) as i16,
-							exponent: 3,
-							prefix: prefix as u8,
+						Ok(Self {
+							number: super::Signifix {
+								numerator: signed(1E+03) as i16,
+								exponent: 3,
+								prefix: prefix as u8,
+							}
 						})
 					} else {
 						if number.is_nan() {
