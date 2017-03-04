@@ -94,7 +94,7 @@ pub const DEF_MAX_LEN: usize = 9;
 
 /// Binary prefix symbols from `Some("Ki")` to `Some("Yi")` indexed from `1` to
 /// `8`, or `None` indexed at `0`.
-pub const SYMBOLS: [Option<&'static str>; 9] = [
+pub const SYMBOLS: [Option<&str>; 9] = [
 	None,
 	Some("Ki"), Some("Mi"), Some("Gi"), Some("Ti"),
 	Some("Pi"), Some("Ei"), Some("Zi"), Some("Yi"),
@@ -152,7 +152,7 @@ impl Signifix {
 	}
 
 	/// Symbol of binary prefix from `Some("Ki")` to `Some("Yi")`, or `None`.
-	pub fn symbol(&self) -> Option<&'static str> {
+	pub fn symbol(&self) -> Option<&str> {
 		SYMBOLS[self.prefix()]
 	}
 

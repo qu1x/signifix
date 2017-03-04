@@ -103,7 +103,7 @@ pub const ALT_MAX_LEN: usize = 6;
 /// Metric prefix symbols from `Some("y")` to `Some("m")` indexed from `0` to
 /// `7` and from `Some("k")` to `Some("Y")` indexed from `9` to `16`, or `None`
 /// indexed at `8`.
-pub const SYMBOLS: [Option<&'static str>; 17] = [
+pub const SYMBOLS: [Option<&str>; 17] = [
 	Some("y"), Some("z"), Some("a"), Some("f"),
 	Some("p"), Some("n"), Some("µ"), Some("m"),
 	None,
@@ -163,7 +163,7 @@ impl Signifix {
 	}
 
 	/// Symbol of metric prefix from `Some("y")` to `Some("Y")`, or `None`.
-	pub fn symbol(&self) -> Option<&'static str> {
+	pub fn symbol(&self) -> Option<&str> {
 		SYMBOLS[self.prefix()]
 	}
 
