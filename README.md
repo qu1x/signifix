@@ -14,7 +14,7 @@
 [License]: https://img.shields.io/crates/l/signifix.svg
 [LoC]: https://tokei.rs/b1/github/qu1x/signifix
 
-[Documentation](https://docs.rs/signifix/0.5.0/signifix/)
+[Documentation](https://docs.rs/signifix/0.6.0/signifix/)
 
 Formats a given number in one of the three Signifix notations
 [as defined below](#signifix-notations) by determining
