@@ -68,7 +68,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! signifix = "0.5.0"
+//! signifix = "0.6.0"
 //! ```
 //!
 //! and this to your crate root:
@@ -82,7 +82,7 @@
 //! # Examples
 //!
 //! The Signifix notations result in a fixed number of characters preventing
-//! jumps to the left or right:
+//! jumps to the left or right while making maximum use of their occupied space:
 //!
 //! ```
 //! # #![feature(try_from)]

@@ -1,10 +1,9 @@
 # Version 0.6.0 (2017-03-23)
 
-* Adapted change of `TryFrom` trait item from `Err` to `Error`.
+* Using new `TryFrom` trait item `Error`.
 * Increased code reuse with internal `super::Signifix` type.
-* Binary `symbol()` method now includes the `i`.
-* Changed return value of `symbol()` method from `Option<char>` to
-* `Option<&str>`.
+* Binary `SYMBOLS` and thus the binary `symbol()` method now include the `i`.
+* Both `symbol()` methods now return `Option<&str>` instead of `Option<char>`.
 * Using `UpperExp` without plus sign for `Error`.
 
 # Version 0.5.0 (2017-02-27)
