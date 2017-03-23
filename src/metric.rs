@@ -179,7 +179,7 @@ try_from! { u8, u16, u32, u64, u128, usize }
 try_from! { f32 }
 
 impl TryFrom<f64> for Signifix {
-	type Err = Error;
+	type Error = Error;
 
 	fn try_from(number: f64) -> Result<Self> {
 		let (numerator, prefix) = {

@@ -1,3 +1,12 @@
+# Version 0.6.0 (2017-03-23)
+
+* Adapted change of `TryFrom` trait item from `Err` to `Error`.
+* Increased code reuse with internal `super::Signifix` type.
+* Binary `symbol()` method now includes the `i`.
+* Changed return value of `symbol()` method from `Option<char>` to
+* `Option<&str>`.
+* Using `UpperExp` without plus sign for `Error`.
+
 # Version 0.5.0 (2017-02-27)
 
 * Added common `Error`/`Result` types for the `metric`/`binary` modules.

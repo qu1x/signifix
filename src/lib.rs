@@ -342,7 +342,7 @@ macro_rules! try_from {
 	($($t:ty),*) => (
 		$(
 			impl TryFrom<$t> for Signifix {
-				type Err = Error;
+				type Error = Error;
 
 				fn try_from(number: $t) -> Result<Self> {
 					Self::try_from(number as f64)
