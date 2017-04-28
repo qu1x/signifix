@@ -54,7 +54,7 @@ impl error::Error for Error {
 			Error::OutOfLowerBound(..) =>
 				"Out of lower bound ±1.000 y (= ±1E-24)",
 			Error::OutOfUpperBound(..) =>
-				"Out of upper bound ±999.9 Y (≅ ±1E+27)",
+				"Out of upper bound ±999.9 Y (≈ ±1E+27)",
 			Error::Nan =>
 				"Not a Number (NaN)",
 		}

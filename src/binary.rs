@@ -53,7 +53,7 @@ impl error::Error for Error {
 			Error::OutOfLowerBound(..) =>
 				"Out of lower bound ±1.000 (= ±1 024 ^ 0)",
 			Error::OutOfUpperBound(..) =>
-				"Out of upper bound ±1 023 Yi (≅ ±1 024 ^ 9)",
+				"Out of upper bound ±1 023 Yi (≈ ±1 024 ^ 9)",
 			Error::Nan =>
 				"Not a Number (NaN)",
 		}
