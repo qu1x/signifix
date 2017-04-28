@@ -274,7 +274,6 @@ use std::fmt;
 use std::fmt::{Display, Formatter};
 
 use std::cmp::Ordering;
-use std::cmp::Ordering::Equal;
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 struct Signifix {
@@ -291,14 +290,9 @@ impl PartialOrd for Signifix {
 
 impl Ord for Signifix {
 	fn cmp(&self, other: &Self) -> Ordering {
-		let mut ordering = self.prefix.cmp(&other.prefix);
-		if ordering == Equal {
-			ordering = other.exponent.cmp(&self.exponent);
-			if ordering == Equal {
-				ordering = self.numerator.cmp(&other.numerator)
-			}
-		}
-		ordering
+		self.prefix.cmp(&other.prefix)
+			.then(self.exponent.cmp(&other.exponent).reverse())
+			.then(self.numerator.cmp(&other.numerator))
 	}
 }
 
