@@ -21,7 +21,7 @@ pub enum Error {
 	/// The given number is below the lower bound `±1.000` (`= ±1 024 ^ 0`).
 	OutOfLowerBound(f64),
 
-	/// The given number is above the upper bound `±1 023 Yi` (`≅ ±1 024 ^ 9`)
+	/// The given number is above the upper bound `±1 023 Yi` (`≈ ±1 024 ^ 9`)
 	/// of the uppermost binary prefix yobi (`Yi = 1 024 ^ 8`).
 	OutOfUpperBound(f64),
 

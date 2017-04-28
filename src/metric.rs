@@ -22,7 +22,7 @@ pub enum Error {
 	/// lowermost metric prefix yocto (`y = 1E-24`).
 	OutOfLowerBound(f64),
 
-	/// The given number is above the upper bound `±999.9 Y` (`≅ ±1E+27`) of the
+	/// The given number is above the upper bound `±999.9 Y` (`≈ ±1E+27`) of the
 	/// uppermost metric prefix yotta (`Y = 1E+24`).
 	OutOfUpperBound(f64),
 
