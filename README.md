@@ -240,7 +240,7 @@ use signifix::binary::{Signifix, Error, Result};
 let format_used = |used: usize, size: usize| -> Result<String> {
 	if used == 0 {
 		let size = Signifix::try_from(size)?;
-		return Ok(format!("    0   B (    0 %) of {}B)", size));
+		return Ok(format!("    0   B (    0 %) of {}B", size));
 	}
 	let p100 = Signifix::try_from(used as f64 / size as f64 * 100.0)
 		.map(|p100| format!("{:.*} %", p100.exponent(), p100.significand()))
@@ -248,21 +248,21 @@ let format_used = |used: usize, size: usize| -> Result<String> {
 			{ Ok("  < 1 %".into()) } else { Err(error) })?;
 	let used = Signifix::try_from(used)?;
 	let size = Signifix::try_from(size)?;
-	Ok(format!("{}B ({}) of {}B)", used, p100, size))
+	Ok(format!("{}B ({}) of {}B", used, p100, size))
 };
 
 assert_eq!(format_used(0_000usize.pow(1), 1_024usize.pow(3)),
-	Ok("    0   B (    0 %) of 1.000 GiB)".into()));
+	Ok("    0   B (    0 %) of 1.000 GiB".into()));
 assert_eq!(format_used(1_024usize.pow(2), 1_024usize.pow(3)),
-	Ok("1.000 MiB (  < 1 %) of 1.000 GiB)".into()));
+	Ok("1.000 MiB (  < 1 %) of 1.000 GiB".into()));
 assert_eq!(format_used(3_292usize.pow(2), 1_024usize.pow(3)),
-	Ok("10.34 MiB (1.009 %) of 1.000 GiB)".into()));
+	Ok("10.34 MiB (1.009 %) of 1.000 GiB".into()));
 assert_eq!(format_used(8_192usize.pow(2), 1_024usize.pow(3)),
-	Ok("64.00 MiB (6.250 %) of 1.000 GiB)".into()));
+	Ok("64.00 MiB (6.250 %) of 1.000 GiB".into()));
 assert_eq!(format_used(1_000usize.pow(3), 1_024usize.pow(3)),
-	Ok("953.7 MiB (93.13 %) of 1.000 GiB)".into()));
+	Ok("953.7 MiB (93.13 %) of 1.000 GiB".into()));
 assert_eq!(format_used(1_024usize.pow(3), 1_024usize.pow(3)),
-	Ok("1.000 GiB (100.0 %) of 1.000 GiB)".into()));
+	Ok("1.000 GiB (100.0 %) of 1.000 GiB".into()));
 ```
 
 ## License
