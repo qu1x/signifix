@@ -353,7 +353,7 @@ pub mod metric;
 pub mod binary;
 
 /// A common error arising from this crate's modules.
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum Error {
 	/// A given number is not representable with any metric prefix.
 	Metric(metric::Error),
@@ -361,8 +361,6 @@ pub enum Error {
 	/// A given number is not representable with any binary prefix.
 	Binary(binary::Error),
 }
-
-impl Eq for Error {}
 
 impl From<metric::Error> for Error {
 	fn from(error: metric::Error) -> Self {
