@@ -171,6 +171,36 @@ impl Signifix {
 	pub fn factor(&self) -> f64 {
 		FACTORS[self.prefix()]
 	}
+
+	/// Format trait implementation allowing localization.
+	///
+	/// Used by this type's `Display` trait implementation with a decimal point
+	/// as `decimal_mark`.
+	pub fn fmt(&self, f: &mut Formatter,
+		decimal_mark: &str)
+	-> fmt::Result {
+		assert_eq!(decimal_mark.len(), 1);
+		let sign = if self.numerator().is_negative() { "-" } else
+			if f.sign_plus() { "+" } else { "" };
+		let (integer, fractional) = self.parts();
+		if f.alternate() {
+			let symbol = self.symbol().unwrap_or("#");
+			f.pad(&format!("{}{}{}{:04$}",
+				sign, integer.abs(), symbol, fractional,
+				self.exponent()))
+		} else {
+			let symbol = self.symbol().unwrap_or(" ");
+			f.pad(&format!("{}{}{}{:05$} {}",
+				sign, integer.abs(), decimal_mark, fractional, symbol,
+				self.exponent()))
+		}
+	}
+}
+
+impl Display for Signifix {
+	fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+		self.fmt(f, ".")
+	}
 }
 
 try_from! { i8, i16, i32, i64, i128, isize }
@@ -277,23 +307,6 @@ impl TryFrom<f64> for Signifix {
 					}
 				}
 			}
-		}
-	}
-}
-
-impl Display for Signifix {
-	fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-		let sign = if self.numerator().is_negative() { "-" } else
-			if f.sign_plus() { "+" } else { "" };
-		if f.alternate() {
-			let symbol = self.symbol().unwrap_or("#");
-			let (integer, fractional) = self.parts();
-			f.pad(&format!("{}{}{}{:04$}",
-				sign, integer.abs(), symbol, fractional, self.exponent()))
-		} else {
-			let symbol = self.symbol().unwrap_or(" ");
-			f.pad(&format!("{}{:.*} {}",
-				sign, self.exponent(), self.significand().abs(), symbol))
 		}
 	}
 }

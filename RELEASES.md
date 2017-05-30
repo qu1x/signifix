@@ -1,3 +1,7 @@
+# Version 0.7.0 (2017-05-30)
+
+  * Added localization support.
+
 # Version 0.6.0 (2017-03-23)
 
   * Using new `TryFrom` trait item `Error`.
