@@ -175,11 +175,13 @@ impl Signifix {
 	/// Format trait implementation allowing localization.
 	///
 	/// Used by this type's `Display` trait implementation with a decimal point
-	/// as `decimal_mark`.
+	/// as `decimal_mark`. Localization is achieved by wrapping the `Signifix`
+	/// type into a locale-sensitive wrapper type which implements the `Display`
+	/// trait via this method. The `decimal_mark` must be of a single character.
 	pub fn fmt(&self, f: &mut Formatter,
 		decimal_mark: &str)
 	-> fmt::Result {
-		assert_eq!(decimal_mark.len(), 1);
+		assert_eq!(decimal_mark.chars().count(), 1);
 		let sign = if self.numerator().is_negative() { "-" } else
 			if f.sign_plus() { "+" } else { "" };
 		let (integer, fractional) = self.parts();
