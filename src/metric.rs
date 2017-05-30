@@ -174,6 +174,9 @@ impl Signifix {
 
 	/// Format trait implementation allowing localization.
 	///
+	/// **NOTE**: This is a temporary localization approach until there is a
+	/// recommended and possibly transparent Rust localization system.
+	///
 	/// Used by this type's `Display` trait implementation with a decimal point
 	/// as `decimal_mark`. Localization is achieved by wrapping the `Signifix`
 	/// type into a locale-sensitive wrapper type which implements the `Display`
