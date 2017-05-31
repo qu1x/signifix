@@ -169,7 +169,8 @@
 //! 			Error::Nan => " - ---- - ", // zero bytes in zero nanoseconds
 //! 		}.into(),
 //! 	};
-//! 	assert_eq!(rate.chars().count(), DEF_MIN_LEN + unit.chars().count());
+//! 	debug_assert_eq!(rate.chars().count(),
+//! 		DEF_MIN_LEN + unit.chars().count());
 //! 	rate
 //! };
 //!
