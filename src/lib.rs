@@ -261,6 +261,51 @@
 //! assert_eq!(format_used(1_024usize.pow(3), 1_024usize.pow(3)),
 //! 	Ok("1.000 GiB (100.0 %) of 1.000 GiB".into()));
 //! ```
+//!
+//! Until there is a recommended and possible implicit localization system for
+//! Rust, explicit localization can be achieved by wrapping the `Signifix` type
+//! into a locale-sensitive newtype which implements the `Display` trait via the
+//! `Signifix::fmt()` method:
+//!
+//! ```
+//! # #![feature(try_from)]
+//! use std::convert::TryFrom; // Until stabilized.
+//!
+//! use signifix::binary::{Signifix, Result};
+//!
+//! struct SignifixSi(Signifix); // English version of SI style (default)
+//! struct SignifixEn(Signifix); // English locale
+//! struct SignifixDe(Signifix); // German locale
+//!
+//! impl std::fmt::Display for SignifixSi {
+//! 	fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+//! 		std::fmt::Display::fmt(&self.0, f)
+//! 	}
+//! }
+//! impl std::fmt::Display for SignifixEn {
+//! 	fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+//! 		self.0.fmt(f, ".", ",")
+//! 	}
+//! }
+//! impl std::fmt::Display for SignifixDe {
+//! 	fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+//! 		self.0.fmt(f, ",", ".")
+//! 	}
+//! }
+//!
+//! let locale = |number| -> Result<(String, String, String)> {
+//! 	Signifix::try_from(number).map(|number| (
+//! 		format!("{}", SignifixSi(number)),
+//! 		format!("{}", SignifixEn(number)),
+//! 		format!("{}", SignifixDe(number)),
+//! 	))
+//! };
+//!
+//! assert_eq!(locale(999.9f64 * 1_024f64),
+//! 	Ok(("999.9 Ki".into(), "999.9 Ki".into(), "999,9 Ki".into())));
+//! assert_eq!(locale(1_000f64 * 1_024f64),
+//! 	Ok(("1 000 Ki".into(), "1,000 Ki".into(), "1.000 Ki".into())));
+//! ```
 
 #![deny(missing_docs)]
 

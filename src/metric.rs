@@ -172,15 +172,14 @@ impl Signifix {
 		FACTORS[self.prefix()]
 	}
 
-	/// Format trait implementation allowing localization.
+	/// Format trait implementation allowing explicit localization.
 	///
-	/// **NOTE**: This is a temporary localization approach until there is a
-	/// recommended and possibly transparent Rust localization system.
-	///
-	/// Used by this type's `Display` trait implementation with a decimal point
-	/// as `decimal_mark`. Localization is achieved by wrapping the `Signifix`
-	/// type into a locale-sensitive wrapper type which implements the `Display`
-	/// trait via this method. The `decimal_mark` must be of a single character.
+	/// Until there is a recommended and possible implicit localization system
+	/// for Rust, explicit localization can be achieved by wrapping the
+	/// `Signifix` type into a locale-sensitive newtype which implements the
+	/// `Display` trait via the this method. Used by this type's `Display`
+	/// trait implementation with a decimal point as `decimal_mark`. The
+	/// `decimal_mark` must be of a single character.
 	pub fn fmt(&self, f: &mut Formatter,
 		decimal_mark: &str)
 	-> fmt::Result {
