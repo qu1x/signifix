@@ -14,7 +14,7 @@
 [License]: https://img.shields.io/crates/l/signifix.svg
 [LoC]: https://tokei.rs/b1/github/qu1x/signifix
 
-[Documentation](https://docs.rs/signifix/0.6.0/signifix/)
+[Documentation](https://docs.rs/signifix/0.7.0/signifix/)
 
 Formats a given number in one of the three Signifix notations
 [as defined below](#signifix-notations) by determining
@@ -48,9 +48,8 @@ The two Signifix notations with metric prefix comprise
 In default notation the placeholder is another whitespace as in `±1.234␣␣`
 to align consistently, while in alternate notation it is a number sign as in
 `±1#234` to conspicuously separate the integer from the fractional part of
-the significand.
-
-The plus sign of positive numbers is optional.
+the significand. The decimal mark is locale-sensitive and defaults to a
+decimal point. The plus sign of positive numbers is optional.
 
 ### With Binary Prefix
 
@@ -64,9 +63,9 @@ The one Signifix notation with binary prefix comprises
     appended along with a whitespace as in `±1.234␣Ki`.
 
 To align consistently, the placeholder is another two whitespaces as in
-`±1.234␣␣␣` while the thousands separator is a whitespace as in `±1␣023␣Ki`.
-
-The plus sign of positive numbers is optional.
+`±1.234␣␣␣` while the locale-sensitive thousands separator defaults to a
+whitespace as in `±1␣023␣Ki`. The locale-sensitive decimal mark defaults to
+a decimal point. The plus sign of positive numbers is optional.
 
 ## Usage
 
@@ -76,7 +75,7 @@ used by adding `signifix` to the dependencies in your project's
 
 ```toml
 [dependencies]
-signifix = "0.6.0"
+signifix = "0.7.0"
 ```
 
 and this to your crate root:
@@ -176,7 +175,8 @@ let format_rate = |bytes: u128, nanoseconds: u128| -> String {
 			Error::Nan => " - ---- - ", // zero bytes in zero nanoseconds
 		}.into(),
 	};
-	assert_eq!(rate.chars().count(), DEF_MIN_LEN + unit.chars().count());
+	debug_assert_eq!(rate.chars().count(),
+		DEF_MIN_LEN + unit.chars().count());
 	rate
 };
 
@@ -263,6 +263,50 @@ assert_eq!(format_used(1_000usize.pow(3), 1_024usize.pow(3)),
 	Ok("953.7 MiB (93.13 %) of 1.000 GiB".into()));
 assert_eq!(format_used(1_024usize.pow(3), 1_024usize.pow(3)),
 	Ok("1.000 GiB (100.0 %) of 1.000 GiB".into()));
+```
+
+Until there is a recommended and possible implicit localization system for
+Rust, explicit localization can be achieved by wrapping the `Signifix` type
+into a locale-sensitive newtype which implements the `Display` trait via the
+`Signifix::fmt()` method:
+
+```rust
+use std::convert::TryFrom; // Until stabilized.
+
+use signifix::binary::{Signifix, Result};
+
+struct SignifixSi(Signifix); // English version of SI style (default)
+struct SignifixEn(Signifix); // English locale
+struct SignifixDe(Signifix); // German locale
+
+impl std::fmt::Display for SignifixSi {
+	fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+		std::fmt::Display::fmt(&self.0, f)
+	}
+}
+impl std::fmt::Display for SignifixEn {
+	fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+		self.0.fmt(f, ".", ",")
+	}
+}
+impl std::fmt::Display for SignifixDe {
+	fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+		self.0.fmt(f, ",", ".")
+	}
+}
+
+let locale = |number| -> Result<(String, String, String)> {
+	Signifix::try_from(number).map(|number| (
+		format!("{}", SignifixSi(number)),
+		format!("{}", SignifixEn(number)),
+		format!("{}", SignifixDe(number)),
+	))
+};
+
+assert_eq!(locale(999.9f64 * 1_024f64),
+	Ok(("999.9 Ki".into(), "999.9 Ki".into(), "999,9 Ki".into())));
+assert_eq!(locale(1_000f64 * 1_024f64),
+	Ok(("1 000 Ki".into(), "1,000 Ki".into(), "1.000 Ki".into())));
 ```
 
 ## License
