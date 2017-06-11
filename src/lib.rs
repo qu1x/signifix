@@ -28,6 +28,7 @@
 //!      4. [Filesize Diff](#filesize-diff)
 //!      5. [Boundary Stat](#boundary-stat)
 //!      6. [Localizations](#localizations)
+//!      7. [Customization](#customization)
 //!
 //! # Signifix Notations
 //!
@@ -331,6 +332,58 @@
 //! 	Ok(("999.9 Ki".into(), "999.9 Ki".into(), "999,9 Ki".into())));
 //! assert_eq!(localizations(1_000f64 * 1_024f64),
 //! 	Ok(("1 000 Ki".into(), "1,000 Ki".into(), "1.000 Ki".into())));
+//! ```
+//!
+//! ## Customization
+//!
+//! Customization can be achieved by extracting information from the `Signifix`
+//! type via its methods:
+//!
+//! ```
+//! # #![feature(try_from)]
+//! use std::convert::TryFrom; // Until stabilized.
+//!
+//! use signifix::metric::{Signifix, Result};
+//!
+//! struct SignifixTable<'a>(&'a[Signifix]);
+//!
+//! impl<'a> std::fmt::Display for SignifixTable<'a> {
+//! 	fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+//! 		f.pad("┌───┬───────┬───────┐\n")?;
+//! 		f.pad("│ ± │ Value │ Order │\n")?;
+//! 		f.pad("├───┼───────┼───────┤\n")?;
+//! 		for entry in self.0 {
+//! 			f.pad(&format!("│ {} │ {:.*} │ {:5} │\n",
+//! 				if entry.numerator().is_negative() { '-' } else { '+' },
+//! 				entry.exponent(), entry.significand().abs(),
+//! 				entry.name().unwrap_or(("one", "One")).1))?;
+//! 		}
+//! 		f.pad("└───┴───────┴───────┘\n")?;
+//! 		Ok(())
+//! 	}
+//! }
+//!
+//! let customization = |entries: &[_]| -> Result<String> {
+//! 	let mut table = Vec::with_capacity(entries.len());
+//! 	for entry in entries {
+//! 		table.push(Signifix::try_from(*entry)?);
+//! 	}
+//! 	Ok(SignifixTable(&table).to_string())
+//! };
+//!
+//! assert_eq!(customization(&[
+//! 	 1.234E-06,
+//! 	 12.34E+00,
+//! 	-123.4E+03,
+//! ]), Ok(concat!(
+//! 	"┌───┬───────┬───────┐\n",
+//! 	"│ ± │ Value │ Order │\n",
+//! 	"├───┼───────┼───────┤\n",
+//! 	"│ + │ 1.234 │ Micro │\n",
+//! 	"│ + │ 12.34 │ One   │\n",
+//! 	"│ - │ 123.4 │ Kilo  │\n",
+//! 	"└───┴───────┴───────┘\n",
+//! ).into()));
 //! ```
 
 #![deny(missing_docs)]

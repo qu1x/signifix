@@ -36,6 +36,7 @@ Formats a given number in one of the three Signifix notations
      4. [Filesize Diff](#filesize-diff)
      5. [Boundary Stat](#boundary-stat)
      6. [Localizations](#localizations)
+     7. [Customization](#customization)
 
 ## Signifix Notations
 
@@ -170,7 +171,7 @@ use std::convert::TryFrom; // Until stabilized.
 use std::f64;
 use signifix::metric::{Signifix, Error, DEF_MIN_LEN};
 
-let format_rate = |bytes: u128, nanoseconds: u128| -> String {
+let transfer_rate = |bytes: u128, nanoseconds: u128| -> String {
 	let bytes_per_second = bytes as f64 / nanoseconds as f64 * 1E+09;
 	let unit = "B/s";
 	let rate = match Signifix::try_from(bytes_per_second) {
@@ -198,12 +199,12 @@ let format_rate = |bytes: u128, nanoseconds: u128| -> String {
 	rate
 };
 
-assert_eq!(format_rate(42_667, 300_000_000_000), "142.2  B/s");
-assert_eq!(format_rate(42_667, 030_000_000_000), "1.422 kB/s");
-assert_eq!(format_rate(42_667, 003_000_000_000), "14.22 kB/s");
-assert_eq!(format_rate(00_001, 003_000_000_000), " - slow - ");
-assert_eq!(format_rate(00_000, 003_000_000_000), " - idle - ");
-assert_eq!(format_rate(42_667, 000_000_000_000), " - ---- - ");
+assert_eq!(transfer_rate(42_667, 300_000_000_000), "142.2  B/s");
+assert_eq!(transfer_rate(42_667, 030_000_000_000), "1.422 kB/s");
+assert_eq!(transfer_rate(42_667, 003_000_000_000), "14.22 kB/s");
+assert_eq!(transfer_rate(00_001, 003_000_000_000), " - slow - ");
+assert_eq!(transfer_rate(00_000, 003_000_000_000), " - idle - ");
+assert_eq!(transfer_rate(42_667, 000_000_000_000), " - ---- - ");
 ```
 
 ### Measured Amps
@@ -216,7 +217,7 @@ use std::convert::TryFrom; // Until stabilized.
 
 use signifix::metric::{Signifix, Result, DEF_MAX_LEN};
 
-let format_load = |amps| -> Result<String> {
+let measured_amps = |amps| -> Result<String> {
 	if let Some(amps) = amps {
 		Signifix::try_from(amps)
 			.map(|amps| format!("{:>1$}A", amps, DEF_MAX_LEN))
@@ -225,9 +226,9 @@ let format_load = |amps| -> Result<String> {
 	}
 };
 
-assert_eq!(format_load(Some( 1.476E-06)), Ok(" 1.476 µA".into()));
-assert_eq!(format_load(None),             Ok("     0  A".into()));
-assert_eq!(format_load(Some(-2.927E-06)), Ok("-2.927 µA".into()));
+assert_eq!(measured_amps(Some( 1.476E-06)), Ok(" 1.476 µA".into()));
+assert_eq!(measured_amps(None),             Ok("     0  A".into()));
+assert_eq!(measured_amps(Some(-2.927E-06)), Ok("-2.927 µA".into()));
 ```
 
 ### Filesize Diff
@@ -240,15 +241,15 @@ use std::convert::TryFrom; // Until stabilized.
 
 use signifix::metric::{Signifix, Error, Result};
 
-let format_diff = |curr, prev| -> Result<String> {
+let filesize_diff = |curr, prev| -> Result<String> {
 	Signifix::try_from(curr - prev).map(|diff| format!("{:+#}", diff))
 		.or_else(|case| if case == Error::OutOfLowerBound(0f64)
 			{ Ok("=const".into()) } else { Err(case) })
 };
 
-assert_eq!(format_diff(78_346, 57_393), Ok("+20k95".into()));
-assert_eq!(format_diff(93_837, 93_837), Ok("=const".into()));
-assert_eq!(format_diff(27_473, 36_839), Ok("-9k366".into()));
+assert_eq!(filesize_diff(78_346, 57_393), Ok("+20k95".into()));
+assert_eq!(filesize_diff(93_837, 93_837), Ok("=const".into()));
+assert_eq!(filesize_diff(27_473, 36_839), Ok("-9k366".into()));
 ```
 
 ### Boundary Stat
@@ -261,7 +262,7 @@ use std::convert::TryFrom; // Until stabilized.
 
 use signifix::binary::{Signifix, Error, Result};
 
-let format_used = |used: usize, size: usize| -> Result<String> {
+let boundary_stat = |used: usize, size: usize| -> Result<String> {
 	if used == 0 {
 		let size = Signifix::try_from(size)?;
 		return Ok(format!("    0   B (    0 %) of {}B", size));
@@ -275,17 +276,17 @@ let format_used = |used: usize, size: usize| -> Result<String> {
 	Ok(format!("{}B ({}) of {}B", used, p100, size))
 };
 
-assert_eq!(format_used(0_000usize.pow(1), 1_024usize.pow(3)),
+assert_eq!(boundary_stat(0_000usize.pow(1), 1_024usize.pow(3)),
 	Ok("    0   B (    0 %) of 1.000 GiB".into()));
-assert_eq!(format_used(1_024usize.pow(2), 1_024usize.pow(3)),
+assert_eq!(boundary_stat(1_024usize.pow(2), 1_024usize.pow(3)),
 	Ok("1.000 MiB (  < 1 %) of 1.000 GiB".into()));
-assert_eq!(format_used(3_292usize.pow(2), 1_024usize.pow(3)),
+assert_eq!(boundary_stat(3_292usize.pow(2), 1_024usize.pow(3)),
 	Ok("10.34 MiB (1.009 %) of 1.000 GiB".into()));
-assert_eq!(format_used(8_192usize.pow(2), 1_024usize.pow(3)),
+assert_eq!(boundary_stat(8_192usize.pow(2), 1_024usize.pow(3)),
 	Ok("64.00 MiB (6.250 %) of 1.000 GiB".into()));
-assert_eq!(format_used(1_000usize.pow(3), 1_024usize.pow(3)),
+assert_eq!(boundary_stat(1_000usize.pow(3), 1_024usize.pow(3)),
 	Ok("953.7 MiB (93.13 %) of 1.000 GiB".into()));
-assert_eq!(format_used(1_024usize.pow(3), 1_024usize.pow(3)),
+assert_eq!(boundary_stat(1_024usize.pow(3), 1_024usize.pow(3)),
 	Ok("1.000 GiB (100.0 %) of 1.000 GiB".into()));
 ```
 
@@ -321,7 +322,7 @@ impl std::fmt::Display for SignifixDe {
 	}
 }
 
-let locale = |number| -> Result<(String, String, String)> {
+let localizations = |number| -> Result<(String, String, String)> {
 	Signifix::try_from(number).map(|number| (
 		format!("{}", SignifixSi(number)),
 		format!("{}", SignifixEn(number)),
@@ -329,10 +330,61 @@ let locale = |number| -> Result<(String, String, String)> {
 	))
 };
 
-assert_eq!(locale(999.9f64 * 1_024f64),
+assert_eq!(localizations(999.9f64 * 1_024f64),
 	Ok(("999.9 Ki".into(), "999.9 Ki".into(), "999,9 Ki".into())));
-assert_eq!(locale(1_000f64 * 1_024f64),
+assert_eq!(localizations(1_000f64 * 1_024f64),
 	Ok(("1 000 Ki".into(), "1,000 Ki".into(), "1.000 Ki".into())));
+```
+
+### Customization
+
+Customization can be achieved by extracting information from the `Signifix`
+type via its methods:
+
+```rust
+use std::convert::TryFrom; // Until stabilized.
+
+use signifix::metric::{Signifix, Result};
+
+struct SignifixTable<'a>(&'a[Signifix]);
+
+impl<'a> std::fmt::Display for SignifixTable<'a> {
+	fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+		f.pad("┌───┬───────┬───────┐\n")?;
+		f.pad("│ ± │ Value │ Order │\n")?;
+		f.pad("├───┼───────┼───────┤\n")?;
+		for entry in self.0 {
+			f.pad(&format!("│ {} │ {:.*} │ {:5} │\n",
+				if entry.numerator().is_negative() { '-' } else { '+' },
+				entry.exponent(), entry.significand().abs(),
+				entry.name().unwrap_or(("one", "One")).1))?;
+		}
+		f.pad("└───┴───────┴───────┘\n")?;
+		Ok(())
+	}
+}
+
+let customization = |entries: &[_]| -> Result<String> {
+	let mut table = Vec::with_capacity(entries.len());
+	for entry in entries {
+		table.push(Signifix::try_from(*entry)?);
+	}
+	Ok(SignifixTable(&table).to_string())
+};
+
+assert_eq!(customization(&[
+	 1.234E-06,
+	 12.34E+00,
+	-123.4E+03,
+]), Ok(concat!(
+	"┌───┬───────┬───────┐\n",
+	"│ ± │ Value │ Order │\n",
+	"├───┼───────┼───────┤\n",
+	"│ + │ 1.234 │ Micro │\n",
+	"│ + │ 12.34 │ One   │\n",
+	"│ - │ 123.4 │ Kilo  │\n",
+	"└───┴───────┴───────┘\n",
+).into()));
 ```
 
 ## License
