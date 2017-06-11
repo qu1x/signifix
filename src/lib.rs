@@ -15,6 +15,20 @@
 //!  2. the decimal mark position in such a way as to sustain a fixed number of
 //!     four significant figures.
 //!
+//! # Contents
+//!
+//!   * [Signifix Notations](#signifix-notations)
+//!       * [With Metrix Prefix](#with-metric-prefix)
+//!       * [With Binary Prefix](#with-binary-prefix)
+//!   * [Usage](#usage)
+//!   * [Examples](#examples)
+//!      1. [The Notations](#the-notations)
+//!      2. [Transfer Rate](#transfer-rate)
+//!      3. [Measured Amps](#measured-amps)
+//!      4. [Filesize Diff](#filesize-diff)
+//!      5. [Boundary Stat](#boundary-stat)
+//!      6. [Localizations](#localizations)
+//!
 //! # Signifix Notations
 //!
 //! Three notations are defined,
@@ -80,6 +94,8 @@
 //!
 //! # Examples
 //!
+//! ## The Notations
+//!
 //! The Signifix notations result in a fixed number of characters preventing
 //! jumps to the left or right while making maximum use of their occupied space:
 //!
@@ -135,6 +151,8 @@
 //! 	Ok("1.000 Ki".into()));
 //! ```
 //!
+//! ## Transfer Rate
+//!
 //! This is useful to smoothly refresh a transfer rate within a terminal:
 //!
 //! ```
@@ -182,6 +200,8 @@
 //! assert_eq!(format_rate(42_667, 000_000_000_000), " - ---- - ");
 //! ```
 //!
+//! ## Measured Amps
+//!
 //! Or to monitor a measured quantity like an electrical current including its
 //! direction with positive numbers being padded to align with negative ones:
 //!
@@ -205,6 +225,8 @@
 //! assert_eq!(format_load(Some(-2.927E-06)), Ok("-2.927 µA".into()));
 //! ```
 //!
+//! ## Filesize Diff
+//!
 //! While to visualize a change in file size, a plus sign might be preferred for
 //! positive numbers:
 //!
@@ -224,6 +246,8 @@
 //! assert_eq!(format_diff(93_837, 93_837), Ok("=const".into()));
 //! assert_eq!(format_diff(27_473, 36_839), Ok("-9k366".into()));
 //! ```
+//!
+//! ## Boundary Stat
 //!
 //! The binary prefix instead suits well to visualize quantities being multiples
 //! of powers of two, such as memory boundaries due to binary addressing:
@@ -262,6 +286,8 @@
 //! 	Ok("1.000 GiB (100.0 %) of 1.000 GiB".into()));
 //! ```
 //!
+//! ## Localizations
+//!
 //! Until there is a recommended and possible implicit localization system for
 //! Rust, explicit localization can be achieved by wrapping the `Signifix` type
 //! into a locale-sensitive newtype which implements the `Display` trait via the
@@ -273,9 +299,9 @@
 //!
 //! use signifix::binary::{Signifix, Result};
 //!
-//! struct SignifixSi(Signifix); // English version of SI style (default)
-//! struct SignifixEn(Signifix); // English locale
-//! struct SignifixDe(Signifix); // German locale
+//! struct SignifixSi(Signifix); // English SI style (default)
+//! struct SignifixEn(Signifix); // English locale (whitespace -> comma)
+//! struct SignifixDe(Signifix); // German locale (comma <-> point)
 //!
 //! impl std::fmt::Display for SignifixSi {
 //! 	fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
