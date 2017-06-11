@@ -1,4 +1,4 @@
-# Version 0.7.0 (2017-06-09)
+# Version 0.7.0 (2017-06-11)
 
   * Added explicit localization support.
 
