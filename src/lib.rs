@@ -55,8 +55,8 @@
 //! In default notation the placeholder is another whitespace as in `±1.234␣␣`
 //! to align consistently, while in alternate notation it is a number sign as in
 //! `±1#234` to conspicuously separate the integer from the fractional part of
-//! the significand. The decimal mark is locale-sensitive and defaults to a
-//! decimal point. The plus sign of positive numbers is optional.
+//! the significand. The locale-sensitive decimal mark defaults to a decimal
+//! point. The plus sign of positive numbers is optional.
 //!
 //! ## With Binary Prefix
 //!
@@ -70,9 +70,9 @@
 //!     appended along with a whitespace as in `±1.234␣Ki`.
 //!
 //! To align consistently, the placeholder is another two whitespaces as in
-//! `±1.234␣␣␣` while the locale-sensitive thousands separator defaults to a
-//! whitespace as in `±1␣023␣Ki`. The locale-sensitive decimal mark defaults to
-//! a decimal point. The plus sign of positive numbers is optional.
+//! `±1.234␣␣␣`. The locale-sensitive decimal mark defaults to a decimal point
+//! while the locale-sensitive thousands separator defaults to a whitespace as
+//! in `±1␣023␣Ki`. The plus sign of positive numbers is optional.
 //!
 //! # Usage
 //!
