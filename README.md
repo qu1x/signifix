@@ -37,6 +37,8 @@ Formats a given number in one of the three Signifix notations
      5. [Boundary Stat](#boundary-stat)
      6. [Localizations](#localizations)
      7. [Customization](#customization)
+  * [License](#license)
+  * [Contribution](#contribution)
 
 ## Signifix Notations
 
@@ -63,8 +65,8 @@ The two Signifix notations with metric prefix comprise
 In default notation the placeholder is another whitespace as in `±1.234␣␣`
 to align consistently, while in alternate notation it is a number sign as in
 `±1#234` to conspicuously separate the integer from the fractional part of
-the significand. The decimal mark is locale-sensitive and defaults to a
-decimal point. The plus sign of positive numbers is optional.
+the significand. The locale-sensitive decimal mark defaults to a decimal
+point. The plus sign of positive numbers is optional.
 
 ### With Binary Prefix
 
@@ -78,9 +80,9 @@ The one Signifix notation with binary prefix comprises
     appended along with a whitespace as in `±1.234␣Ki`.
 
 To align consistently, the placeholder is another two whitespaces as in
-`±1.234␣␣␣` while the locale-sensitive thousands separator defaults to a
-whitespace as in `±1␣023␣Ki`. The locale-sensitive decimal mark defaults to
-a decimal point. The plus sign of positive numbers is optional.
+`±1.234␣␣␣`. The locale-sensitive decimal mark defaults to a decimal point
+while the locale-sensitive thousands separator defaults to a whitespace as
+in `±1␣023␣Ki`. The plus sign of positive numbers is optional.
 
 ## Usage
 
@@ -350,16 +352,15 @@ struct SignifixTable<'a>(&'a[Signifix]);
 
 impl<'a> std::fmt::Display for SignifixTable<'a> {
 	fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-		f.pad("┌───┬───────┬───────┐\n")?;
-		f.pad("│ ± │ Value │ Order │\n")?;
-		f.pad("├───┼───────┼───────┤\n")?;
+		f.pad(" ±   Int Fra  Order \n")?;
+		f.pad("--- ---- ---- ------\n")?;
 		for entry in self.0 {
-			f.pad(&format!("│ {} │ {:.*} │ {:5} │\n",
-				if entry.numerator().is_negative() { '-' } else { '+' },
-				entry.exponent(), entry.significand().abs(),
+			let (integer, fractional) = entry.parts();
+			f.pad(&format!(" {}   {:3} {:<3}  {:5} \n",
+				if entry.numerator().is_negative() { '−' } else { '+' },
+				integer.abs(), fractional,
 				entry.name().unwrap_or(("one", "One")).1))?;
 		}
-		f.pad("└───┴───────┴───────┘\n")?;
 		Ok(())
 	}
 }
@@ -377,13 +378,11 @@ assert_eq!(customization(&[
 	 12.34E+00,
 	-123.4E+03,
 ]), Ok(concat!(
-	"┌───┬───────┬───────┐\n",
-	"│ ± │ Value │ Order │\n",
-	"├───┼───────┼───────┤\n",
-	"│ + │ 1.234 │ Micro │\n",
-	"│ + │ 12.34 │ One   │\n",
-	"│ - │ 123.4 │ Kilo  │\n",
-	"└───┴───────┴───────┘\n",
+	" ±   Int Fra  Order \n",
+	"--- ---- ---- ------\n",
+	" +     1 234  Micro \n",
+	" +    12 34   One   \n",
+	" −   123 4    Kilo  \n",
 ).into()));
 ```
 
