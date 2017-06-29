@@ -349,16 +349,15 @@
 //!
 //! impl<'a> std::fmt::Display for SignifixTable<'a> {
 //! 	fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-//! 		f.pad("┌───┬───────┬───────┐\n")?;
-//! 		f.pad("│ ± │ Value │ Order │\n")?;
-//! 		f.pad("├───┼───────┼───────┤\n")?;
+//! 		f.pad(" ±   Int Fra  Order \n")?;
+//! 		f.pad("--- ---- ---- ------\n")?;
 //! 		for entry in self.0 {
-//! 			f.pad(&format!("│ {} │ {:.*} │ {:5} │\n",
-//! 				if entry.numerator().is_negative() { '-' } else { '+' },
-//! 				entry.exponent(), entry.significand().abs(),
+//! 			let (integer, fractional) = entry.parts();
+//! 			f.pad(&format!(" {}   {:3} {:<3}  {:5} \n",
+//! 				if entry.numerator().is_negative() { '−' } else { '+' },
+//! 				integer.abs(), fractional,
 //! 				entry.name().unwrap_or(("one", "One")).1))?;
 //! 		}
-//! 		f.pad("└───┴───────┴───────┘\n")?;
 //! 		Ok(())
 //! 	}
 //! }
@@ -376,13 +375,11 @@
 //! 	 12.34E+00,
 //! 	-123.4E+03,
 //! ]), Ok(concat!(
-//! 	"┌───┬───────┬───────┐\n",
-//! 	"│ ± │ Value │ Order │\n",
-//! 	"├───┼───────┼───────┤\n",
-//! 	"│ + │ 1.234 │ Micro │\n",
-//! 	"│ + │ 12.34 │ One   │\n",
-//! 	"│ - │ 123.4 │ Kilo  │\n",
-//! 	"└───┴───────┴───────┘\n",
+//! 	" ±   Int Fra  Order \n",
+//! 	"--- ---- ---- ------\n",
+//! 	" +     1 234  Micro \n",
+//! 	" +    12 34   One   \n",
+//! 	" −   123 4    Kilo  \n",
 //! ).into()));
 //! ```
 
