@@ -100,30 +100,6 @@ pub const ALT_MIN_LEN: usize = 5;
 /// Number of characters in alternate notation when a sign is prefixed.
 pub const ALT_MAX_LEN: usize = 6;
 
-/// Metric prefix lowercase and capitalized names from
-/// `Some(("yocto", "Yocto"))` to `Some(("milli", "Milli"))` indexed from `0` to
-/// `7` and from `Some(("kilo", "Kilo"))` to `Some(("yotta", "Yotta"))` indexed
-/// from `9` to `16`, or `None` indexed at `8`.
-pub const NAMES: [Option<(&str, &str)>; 17] = [
-	Some(("yocto", "Yocto")),
-	Some(("zepto", "Zepto")),
-	Some(("atto",  "Atto")),
-	Some(("femto", "Femto")),
-	Some(("pico",  "Pico")),
-	Some(("nano",  "Nano")),
-	Some(("micro", "Micro")),
-	Some(("milli", "Milli")),
-	None,
-	Some(("kilo",  "Kilo")),
-	Some(("mega",  "Mega")),
-	Some(("giga",  "Giga")),
-	Some(("tera",  "Tera")),
-	Some(("peta",  "Peta")),
-	Some(("exa",   "Exa")),
-	Some(("zetta", "Zetta")),
-	Some(("yotta", "Yotta")),
-];
-
 /// Metric prefix symbols from `Some("y")` to `Some("m")` indexed from `0` to
 /// `7` and from `Some("k")` to `Some("Y")` indexed from `9` to `16`, or `None`
 /// indexed at `8`.
@@ -185,15 +161,6 @@ impl Signifix {
 	/// to `16`.
 	pub fn prefix(&self) -> usize {
 		self.number.prefix()
-	}
-
-	/// Lowercase and capitalized name of metric prefix from
-	/// `Some(("yocto", "Yocto"))` to `Some(("milli", "Milli"))` indexed from
-	/// `0` to `7` and from `Some(("kilo", "Kilo"))` to
-	/// `Some(("yotta", "Yotta"))` indexed from `9` to `16`, or `None` indexed
-	/// at `8`.
-	pub fn name(&self) -> Option<(&str, &str)> {
-		NAMES[self.prefix()]
 	}
 
 	/// Symbol of metric prefix from `Some("y")` to `Some("Y")`, or `None`.

@@ -1,7 +1,6 @@
-# Version 0.7.0 (2017-06-11)
+# Version 0.7.0 (2017-07-04)
 
   * Added explicit localization support.
-  * Added `NAMES` constants and `name()` methods.
 
 # Version 0.6.0 (2017-03-23)
 

@@ -92,21 +92,6 @@ pub const DEF_MIN_LEN: usize = 8;
 /// Number of characters in default notation when a sign is prefixed.
 pub const DEF_MAX_LEN: usize = 9;
 
-/// Binary prefix lowercase and capitalized names from `Some(("kibi", "Kibi"))`
-/// to `Some(("yobi", "Yobi"))` indexed from `1` to `8`, or `None` indexed at
-/// `0`.
-pub const NAMES: [Option<(&str, &str)>; 9] = [
-	None,
-	Some(("kibi", "Kibi")),
-	Some(("mebi", "Mebi")),
-	Some(("gibi", "Gibi")),
-	Some(("tebi", "Tebi")),
-	Some(("pebi", "Pebi")),
-	Some(("exbi", "Exbi")),
-	Some(("zebi", "Zebi")),
-	Some(("yobi", "Yobi")),
-];
-
 /// Binary prefix symbols from `Some("Ki")` to `Some("Yi")` indexed from `1` to
 /// `8`, or `None` indexed at `0`.
 pub const SYMBOLS: [Option<&str>; 9] = [
@@ -165,12 +150,6 @@ impl Signifix {
 	/// to `8`.
 	pub fn prefix(&self) -> usize {
 		self.number.prefix()
-	}
-
-	/// Lowercase and capitalized name of binary prefix from
-	/// `Some(("kibi", "Kibi"))` to `Some(("yobi", "Yobi"))`, or `None`.
-	pub fn name(&self) -> Option<(&str, &str)> {
-		NAMES[self.prefix()]
 	}
 
 	/// Symbol of binary prefix from `Some("Ki")` to `Some("Yi")`, or `None`.

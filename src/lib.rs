@@ -349,14 +349,14 @@
 //!
 //! impl<'a> std::fmt::Display for SignifixTable<'a> {
 //! 	fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-//! 		f.pad(" ±   Int Fra  Order \n")?;
-//! 		f.pad("--- ---- ---- ------\n")?;
+//! 		f.pad(" ±   Int Fra  Exp\n")?;
+//! 		f.pad("--- ---- ---- ---\n")?;
 //! 		for entry in self.0 {
 //! 			let (integer, fractional) = entry.parts();
-//! 			f.pad(&format!(" {}   {:3} {:<3}  {:5} \n",
-//! 				if entry.numerator().is_negative() { '−' } else { '+' },
+//! 			f.pad(&format!(" {}   {:3} {:<3}   {:+}\n",
+//! 				if entry.numerator().is_negative() { '-' } else { '+' },
 //! 				integer.abs(), fractional,
-//! 				entry.name().unwrap_or(("one", "One")).1))?;
+//! 				entry.prefix() as i32 - 8))?;
 //! 		}
 //! 		Ok(())
 //! 	}
@@ -373,13 +373,13 @@
 //! assert_eq!(customization(&[
 //! 	 1.234E-06,
 //! 	 12.34E+00,
-//! 	-123.4E+03,
+//! 	-123.4E+24,
 //! ]), Ok(concat!(
-//! 	" ±   Int Fra  Order \n",
-//! 	"--- ---- ---- ------\n",
-//! 	" +     1 234  Micro \n",
-//! 	" +    12 34   One   \n",
-//! 	" −   123 4    Kilo  \n",
+//! 	" ±   Int Fra  Exp\n",
+//! 	"--- ---- ---- ---\n",
+//! 	" +     1 234   -2\n",
+//! 	" +    12 34    +0\n",
+//! 	" -   123 4     +8\n",
 //! ).into()));
 //! ```
 
