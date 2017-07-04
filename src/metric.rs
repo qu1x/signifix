@@ -208,7 +208,7 @@ impl Signifix {
 
 	/// Format trait implementation allowing explicit localization.
 	///
-	/// Until there is a recommended and possible implicit localization system
+	/// Until there is a recommended and possibly implicit localization system
 	/// for Rust, explicit localization can be achieved by wrapping the
 	/// `Signifix` type into a locale-sensitive newtype which implements the
 	/// `Display` trait via this method. Used by this type's `Display` trait
