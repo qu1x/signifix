@@ -349,11 +349,11 @@
 //!
 //! impl<'a> std::fmt::Display for SignifixTable<'a> {
 //! 	fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-//! 		f.pad("  Int Fra  Exp\n")?;
-//! 		f.pad("----- ---- ---\n")?;
+//! 		f.pad(" Int Fra   10³\n")?;
+//! 		f.pad("---- ---- ----\n")?;
 //! 		for entry in self.0 {
 //! 			let (integer, fractional) = entry.parts();
-//! 			f.pad(&format!(" {:4} {:<3}   {:2}\n",
+//! 			f.pad(&format!("{:4} {:<3}    {:2}\n",
 //! 				integer, fractional, entry.prefix() as i32 - 8))?;
 //! 		}
 //! 		Ok(())
@@ -373,11 +373,11 @@
 //! 	 12.34E+00,
 //! 	-123.4E+24,
 //! ]), Ok(concat!(
-//! 	"  Int Fra  Exp\n",
-//! 	"----- ---- ---\n",
-//! 	"    1 234   -2\n",
-//! 	"   12 34     0\n",
-//! 	" -123 4      8\n",
+//! 	" Int Fra   10³\n",
+//! 	"---- ---- ----\n",
+//! 	"   1 234    -2\n",
+//! 	"  12 34      0\n",
+//! 	"-123 4       8\n",
 //! ).into()));
 //! ```
 
