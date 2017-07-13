@@ -254,12 +254,9 @@ impl TryFrom<f64> for Signifix {
 				(number * FACTORS[FACTORS.len() - 1 - prefix], prefix)
 			}
 		};
-		let scaled = |pow: f64| {
-			(numerator * pow).round()
-		};
-		let signed = |abs: f64| {
-			if number.is_sign_negative() { -abs } else { abs }
-		};
+		let scaled = |pow: f64| (numerator * pow).round();
+		let signed = |abs: f64| if number.is_sign_negative()
+			{ -abs } else { abs };
 		let middle = scaled(1E+02);
 		if middle < 1E+04 {
 			let lower = scaled(1E+03);
