@@ -157,15 +157,13 @@
 //! This is useful to smoothly refresh a transfer rate within a terminal:
 //!
 //! ```
-//! #![feature(i128_type)] // Until stabilized.
-//!
 //! # #![feature(try_from)]
 //! use std::convert::TryFrom; // Until stabilized.
 //!
 //! use std::f64;
 //! use signifix::metric::{Signifix, Error, DEF_MIN_LEN};
 //!
-//! let transfer_rate = |bytes: u128, nanoseconds: u128| -> String {
+//! let transfer_rate = |bytes: u64, nanoseconds: u64| -> String {
 //! 	let bytes_per_second = bytes as f64 / nanoseconds as f64 * 1E+09;
 //! 	let unit = "B/s";
 //! 	let rate = match Signifix::try_from(bytes_per_second) {
