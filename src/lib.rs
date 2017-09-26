@@ -161,10 +161,13 @@
 //! use std::convert::TryFrom; // Until stabilized.
 //!
 //! use std::f64;
+//! use std::time::Duration;
 //! use signifix::metric::{Signifix, Error, DEF_MIN_LEN};
 //!
-//! let transfer_rate = |bytes: u64, nanoseconds: u64| -> String {
-//! 	let bytes_per_second = bytes as f64 / nanoseconds as f64 * 1E+09;
+//! let transfer_rate = |bytes: u64, duration: Duration| -> String {
+//! 	let seconds = duration.as_secs() as f64
+//! 		+ duration.subsec_nanos() as f64 * 1E-09;
+//! 	let bytes_per_second = bytes as f64 / seconds;
 //! 	let unit = "B/s";
 //! 	let rate = match Signifix::try_from(bytes_per_second) {
 //! 		Ok(rate) => if rate.factor() < 1E+00 {
@@ -191,12 +194,12 @@
 //! 	rate
 //! };
 //!
-//! assert_eq!(transfer_rate(42_667, 300_000_000_000), "142.2  B/s");
-//! assert_eq!(transfer_rate(42_667, 030_000_000_000), "1.422 kB/s");
-//! assert_eq!(transfer_rate(42_667, 003_000_000_000), "14.22 kB/s");
-//! assert_eq!(transfer_rate(00_001, 003_000_000_000), " - slow - ");
-//! assert_eq!(transfer_rate(00_000, 003_000_000_000), " - idle - ");
-//! assert_eq!(transfer_rate(42_667, 000_000_000_000), " - ---- - ");
+//! assert_eq!(transfer_rate(42_667, Duration::from_secs(300)), "142.2  B/s");
+//! assert_eq!(transfer_rate(42_667, Duration::from_secs(030)), "1.422 kB/s");
+//! assert_eq!(transfer_rate(42_667, Duration::from_secs(003)), "14.22 kB/s");
+//! assert_eq!(transfer_rate(00_001, Duration::from_secs(003)), " - slow - ");
+//! assert_eq!(transfer_rate(00_000, Duration::from_secs(003)), " - idle - ");
+//! assert_eq!(transfer_rate(42_667, Duration::from_secs(000)), " - ---- - ");
 //! ```
 //!
 //! ## Measured Amps
