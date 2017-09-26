@@ -3,18 +3,16 @@
 **Number Formatter of Fixed Significance with Metric or Binary Prefix**
 
 [![Build Status][]](https://travis-ci.org/qu1x/signifix)
-[![Version][]](https://crates.io/crates/signifix)
 [![Downloads][]](https://crates.io/crates/signifix)
-[![License][]](#license)
-[![LoC][]](https://tokei.rs)
+[![Version][]](https://crates.io/crates/signifix)
+[![Documentation][]](https://docs.rs/signifix)
+[![License][]](https://opensource.org/licenses/Fair)
 
 [Build Status]: https://travis-ci.org/qu1x/signifix.svg
-[Version]: https://img.shields.io/crates/v/signifix.svg
 [Downloads]: https://img.shields.io/crates/d/signifix.svg
+[Version]: https://img.shields.io/crates/v/signifix.svg
+[Documentation]: https://docs.rs/signifix/badge.svg
 [License]: https://img.shields.io/crates/l/signifix.svg
-[LoC]: https://tokei.rs/b1/github/qu1x/signifix
-
-[Documentation](https://docs.rs/signifix/0.7.0/signifix/)
 
 Formats a given number in one of the three Signifix notations
 [as defined below](#signifix-notations) by determining
