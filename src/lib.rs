@@ -260,7 +260,7 @@
 //!
 //! use signifix::binary::{Signifix, Error, Result};
 //!
-//! let boundary_stat = |used: usize, size: usize| -> Result<String> {
+//! let boundary_stat = |used: u64, size: u64| -> Result<String> {
 //! 	if used == 0 {
 //! 		let size = Signifix::try_from(size)?;
 //! 		return Ok(format!("    0   B (    0 %) of {}B", size));
@@ -274,17 +274,17 @@
 //! 	Ok(format!("{}B ({}) of {}B", used, p100, size))
 //! };
 //!
-//! assert_eq!(boundary_stat(0_000usize.pow(1), 1_024usize.pow(3)),
+//! assert_eq!(boundary_stat(0_000u64.pow(1), 1_024u64.pow(3)),
 //! 	Ok("    0   B (    0 %) of 1.000 GiB".into()));
-//! assert_eq!(boundary_stat(1_024usize.pow(2), 1_024usize.pow(3)),
+//! assert_eq!(boundary_stat(1_024u64.pow(2), 1_024u64.pow(3)),
 //! 	Ok("1.000 MiB (  < 1 %) of 1.000 GiB".into()));
-//! assert_eq!(boundary_stat(3_292usize.pow(2), 1_024usize.pow(3)),
+//! assert_eq!(boundary_stat(3_292u64.pow(2), 1_024u64.pow(3)),
 //! 	Ok("10.34 MiB (1.009 %) of 1.000 GiB".into()));
-//! assert_eq!(boundary_stat(8_192usize.pow(2), 1_024usize.pow(3)),
+//! assert_eq!(boundary_stat(8_192u64.pow(2), 1_024u64.pow(3)),
 //! 	Ok("64.00 MiB (6.250 %) of 1.000 GiB".into()));
-//! assert_eq!(boundary_stat(1_000usize.pow(3), 1_024usize.pow(3)),
+//! assert_eq!(boundary_stat(1_000u64.pow(3), 1_024u64.pow(3)),
 //! 	Ok("953.7 MiB (93.13 %) of 1.000 GiB".into()));
-//! assert_eq!(boundary_stat(1_024usize.pow(3), 1_024usize.pow(3)),
+//! assert_eq!(boundary_stat(1_024u64.pow(3), 1_024u64.pow(3)),
 //! 	Ok("1.000 GiB (100.0 %) of 1.000 GiB".into()));
 //! ```
 //!
