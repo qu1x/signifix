@@ -91,6 +91,10 @@ used by adding `signifix` to the dependencies in your project's
 ```toml
 [dependencies]
 signifix = "0.7"
+
+# Optionally enable `i128_type` support. Requires nightly Rust.
+#[dependencies.signifix]
+#features = ["nightly"]
 ```
 
 and this to your crate root:
