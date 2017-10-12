@@ -384,6 +384,8 @@
 
 #![deny(missing_docs)]
 
+#![cfg_attr(feature = "nightly", feature(i128_type))]
+
 #![feature(try_from)]
 
 use std::result;

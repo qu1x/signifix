@@ -208,8 +208,15 @@ impl Display for Signifix {
 	}
 }
 
-try_from! { i8, i16, i32, i64, /*i128, */isize }
-try_from! { u8, u16, u32, u64, /*u128, */usize }
+#[cfg(feature = "nightly")]
+try_from! { i8, i16, i32, i64, i128, isize }
+#[cfg(feature = "nightly")]
+try_from! { u8, u16, u32, u64, u128, usize }
+
+#[cfg(not(feature = "nightly"))]
+try_from! { i8, i16, i32, i64, isize }
+#[cfg(not(feature = "nightly"))]
+try_from! { u8, u16, u32, u64, usize }
 
 try_from! { f32 }
 

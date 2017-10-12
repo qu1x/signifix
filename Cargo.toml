@@ -32,3 +32,6 @@ include = [
 
 [badges]
 travis-ci = { repository = "qu1x/signifix" }
+
+[features]
+nightly = []
