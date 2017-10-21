@@ -14,6 +14,8 @@ use std::error;
 use std::fmt;
 use std::fmt::{Display, Formatter};
 
+use std::cmp::Ordering;
+
 /// An error arising from this module's `TryFrom` trait implementation for its
 /// `Signifix` type.
 #[derive(Debug, Copy, Clone, PartialEq)]
@@ -226,40 +228,10 @@ impl TryFrom<f64> for Signifix {
 	fn try_from(number: f64) -> Result<Self> {
 		let (numerator, prefix) = {
 			let number = number.abs();
-			if number < FACTORS[08] {
-				let prefix = if number < FACTORS[04] {
-					if number < FACTORS[02] {
-						if number < FACTORS[01] { 00 } else { 01 }
-					} else {
-						if number < FACTORS[03] { 02 } else { 03 }
-					}
-				} else {
-					if number < FACTORS[06] {
-						if number < FACTORS[05] { 04 } else { 05 }
-					} else {
-						if number < FACTORS[07] { 06 } else { 07 }
-					}
-				};
-				(number * FACTORS[FACTORS.len() - 1 - prefix], prefix)
-			} else
-			if number < FACTORS[09] {
-				(number, 08)
-			} else {
-				let prefix = if number < FACTORS[13] {
-					if number < FACTORS[11] {
-						if number < FACTORS[10] { 09 } else { 10 }
-					} else {
-						if number < FACTORS[12] { 11 } else { 12 }
-					}
-				} else {
-					if number < FACTORS[15] {
-						if number < FACTORS[14] { 13 } else { 14 }
-					} else {
-						if number < FACTORS[16] { 15 } else { 16 }
-					}
-				};
-				(number * FACTORS[FACTORS.len() - 1 - prefix], prefix)
-			}
+			let prefix = match FACTORS[1..].binary_search_by(|factor|
+				factor.partial_cmp(&number).unwrap_or(Ordering::Less)
+			) { Ok(prefix) => prefix, Err(prefix) => prefix };
+			(number * FACTORS[FACTORS.len() - 1 - prefix], prefix)
 		};
 		let scaled = |pow: f64| (numerator * pow).round();
 		let signed = |abs: f64| if number.is_sign_negative()

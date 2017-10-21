@@ -14,6 +14,8 @@ use std::error;
 use std::fmt;
 use std::fmt::{Display, Formatter};
 
+use std::cmp::Ordering;
+
 /// An error arising from this module's `TryFrom` trait implementation for its
 /// `Signifix` type.
 #[derive(Debug, Copy, Clone, PartialEq)]
@@ -231,24 +233,10 @@ impl TryFrom<f64> for Signifix {
 	fn try_from(number: f64) -> Result<Self> {
 		let (numerator, prefix) = {
 			let number = number.abs();
-			if number < FACTORS[1] {
-				(number, 0)
-			} else {
-				let prefix = if number < FACTORS[5] {
-					if number < FACTORS[3] {
-						if number < FACTORS[2] { 1 } else { 2 }
-					} else {
-						if number < FACTORS[4] { 3 } else { 4 }
-					}
-				} else {
-					if number < FACTORS[7] {
-						if number < FACTORS[6] { 5 } else { 6 }
-					} else {
-						if number < FACTORS[8] { 7 } else { 8 }
-					}
-				};
-				(number / FACTORS[prefix], prefix)
-			}
+			let prefix = match FACTORS[1..].binary_search_by(|factor|
+				factor.partial_cmp(&number).unwrap_or(Ordering::Less)
+			) { Ok(prefix) => prefix, Err(prefix) => prefix };
+			(number / FACTORS[prefix], prefix)
 		};
 		let scaled = |pow: f64| (numerator * pow).round();
 		let signed = |abs: f64| if number.is_sign_negative()
