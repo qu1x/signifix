@@ -14,6 +14,8 @@
 [Documentation]: https://docs.rs/signifix/badge.svg
 [License]: https://img.shields.io/crates/l/signifix.svg
 
+**Works now on stable Rust**
+
 Formats a given number in one of the three Signifix notations
 [as defined below](#signifix-notations) by determining
 

@@ -403,6 +403,8 @@ use std::cmp::Ordering;
 #[cfg(feature = "nightly")]
 pub use std::convert::{TryInto, TryFrom};
 
+/// Required until the `try_from` feature stabilised.
+///
 /// An attempted conversion that consumes `self`, which may or may not be
 /// expensive.
 #[cfg(not(feature = "nightly"))]
@@ -414,6 +416,8 @@ pub trait TryInto<T>: Sized {
 	fn try_into(self) -> result::Result<T, Self::Error>;
 }
 
+/// Required until the `try_from` feature stabilised.
+///
 /// Attempt to construct `Self` via a conversion.
 #[cfg(not(feature = "nightly"))]
 pub trait TryFrom<T>: Sized {
