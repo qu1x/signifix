@@ -82,9 +82,9 @@
 //!
 //! ```toml
 //! [dependencies]
-//! signifix = "0.7"
+//! signifix = "0.8"
 //!
-//! # Optionally enable `i128_type` support. Requires nightly Rust.
+//! # Optionally enable `try_from` and `i128_type` support on nightly Rust.
 //! #[dependencies.signifix]
 //! #features = ["nightly"]
 //! ```
@@ -92,7 +92,9 @@
 //! and this to your crate root:
 //!
 //! ```
-//! #![feature(try_from)] // Until stabilized. Requires nightly Rust.
+//! // Optionally enable `try_from` and `i128_type` support on nightly Rust.
+//! // Required if the `nightly` feature is enabled in your `Cargo.toml`.
+//! //#![feature(try_from, i128_type)]
 //!
 //! extern crate signifix;
 //! ```
@@ -105,8 +107,8 @@
 //! jumps to the left or right while making maximum use of their occupied space:
 //!
 //! ```
-//! # #![feature(try_from)]
-//! use std::convert::TryFrom; // Until stabilized.
+//! # #![cfg_attr(feature = "nightly", feature(try_from, i128_type))]
+//! use signifix::TryFrom; // Until stabilized.
 //!
 //! use signifix::{metric, binary, Result};
 //!
@@ -161,8 +163,8 @@
 //! This is useful to smoothly refresh a transfer rate within a terminal:
 //!
 //! ```
-//! # #![feature(try_from)]
-//! use std::convert::TryFrom; // Until stabilized.
+//! # #![cfg_attr(feature = "nightly", feature(try_from, i128_type))]
+//! use signifix::TryFrom; // Until stabilized.
 //!
 //! use std::f64;
 //! use std::time::Duration;
@@ -212,8 +214,8 @@
 //! direction with positive numbers being padded to align with negative ones:
 //!
 //! ```
-//! # #![feature(try_from)]
-//! use std::convert::TryFrom; // Until stabilized.
+//! # #![cfg_attr(feature = "nightly", feature(try_from, i128_type))]
+//! use signifix::TryFrom; // Until stabilized.
 //!
 //! use signifix::metric::{Signifix, Result, DEF_MAX_LEN};
 //!
@@ -237,8 +239,8 @@
 //! positive numbers:
 //!
 //! ```
-//! # #![feature(try_from)]
-//! use std::convert::TryFrom; // Until stabilized.
+//! # #![cfg_attr(feature = "nightly", feature(try_from, i128_type))]
+//! use signifix::TryFrom; // Until stabilized.
 //!
 //! use signifix::metric::{Signifix, Error, Result};
 //!
@@ -259,8 +261,8 @@
 //! of powers of two, such as memory boundaries due to binary addressing:
 //!
 //! ```
-//! # #![feature(try_from)]
-//! use std::convert::TryFrom; // Until stabilized.
+//! # #![cfg_attr(feature = "nightly", feature(try_from, i128_type))]
+//! use signifix::TryFrom; // Until stabilized.
 //!
 //! use signifix::binary::{Signifix, Error, Result};
 //!
@@ -300,8 +302,8 @@
 //! `Signifix::fmt()` method:
 //!
 //! ```
-//! # #![feature(try_from)]
-//! use std::convert::TryFrom; // Until stabilized.
+//! # #![cfg_attr(feature = "nightly", feature(try_from, i128_type))]
+//! use signifix::TryFrom; // Until stabilized.
 //!
 //! use signifix::binary::{Signifix, Result};
 //!
@@ -345,8 +347,8 @@
 //! type via its methods:
 //!
 //! ```
-//! # #![feature(try_from)]
-//! use std::convert::TryFrom; // Until stabilized.
+//! # #![cfg_attr(feature = "nightly", feature(try_from, i128_type))]
+//! use signifix::TryFrom; // Until stabilized.
 //!
 //! use signifix::metric::{Signifix, Result};
 //!
@@ -388,9 +390,7 @@
 
 #![deny(missing_docs)]
 
-#![cfg_attr(feature = "nightly", feature(i128_type))]
-
-#![feature(try_from)]
+#![cfg_attr(feature = "nightly", feature(try_from, i128_type))]
 
 use std::result;
 use std::error;
@@ -399,6 +399,39 @@ use std::fmt;
 use std::fmt::{Display, Formatter};
 
 use std::cmp::Ordering;
+
+#[cfg(feature = "nightly")]
+pub use std::convert::{TryInto, TryFrom};
+
+/// An attempted conversion that consumes `self`, which may or may not be
+/// expensive.
+#[cfg(not(feature = "nightly"))]
+pub trait TryInto<T>: Sized {
+	/// The type returned in the event of a conversion error.
+	type Error;
+
+	/// Performs the conversion.
+	fn try_into(self) -> result::Result<T, Self::Error>;
+}
+
+/// Attempt to construct `Self` via a conversion.
+#[cfg(not(feature = "nightly"))]
+pub trait TryFrom<T>: Sized {
+	/// The type returned in the event of a conversion error.
+	type Error;
+
+	/// Performs the conversion.
+	fn try_from(value: T) -> result::Result<Self, Self::Error>;
+}
+
+#[cfg(not(feature = "nightly"))]
+impl<T, U> TryInto<U> for T where U: TryFrom<T> {
+	type Error = U::Error;
+
+	fn try_into(self) -> result::Result<U, U::Error> {
+		U::try_from(self)
+	}
+}
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 struct Signifix {
@@ -425,33 +458,26 @@ impl Signifix {
 	fn significand(&self) -> f64 {
 		self.numerator() as f64 * [1E-00, 1E-01, 1E-02, 1E-03][self.exponent()]
 	}
-
 	fn numerator(&self) -> i32 {
 		self.numerator.into()
 	}
-
 	fn denominator(&self) -> i32 {
 		[1, 10, 100, 1_000][self.exponent()]
 	}
-
 	fn exponent(&self) -> usize {
 		self.exponent.into()
 	}
-
 	fn integer(&self) -> i32 {
 		self.numerator() / self.denominator()
 	}
-
 	fn fractional(&self) -> i32 {
 		self.numerator().abs() % self.denominator()
 	}
-
 	fn parts(&self) -> (i32, i32) {
 		let trunc = self.numerator() / self.denominator();
 		let fract = self.numerator() - self.denominator() * trunc;
 		(trunc, fract.abs())
 	}
-
 	fn prefix(&self) -> usize {
 		self.prefix.into()
 	}

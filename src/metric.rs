@@ -6,7 +6,7 @@
 //
 // DISCLAIMER: THE WORKS ARE WITHOUT WARRANTY.
 
-use std::convert::TryFrom;
+use super::TryFrom;
 
 use std::result;
 use std::error;

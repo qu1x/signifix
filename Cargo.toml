@@ -1,12 +1,12 @@
 [package]
 name = "signifix"
-version = "0.7.0"
+version = "0.8.0"
 authors = [
 	"Rouven Spreckels <n3vu0r@qu1x.org>",
 ]
 description = """
 Number Formatter of Fixed Significance with Metric or Binary Prefix"""
-documentation = "https://docs.rs/signifix/0.7.0/signifix/"
+documentation = "https://docs.rs/signifix"
 homepage = "https://qu1x.org/signifix"
 repository = "https://github.com/qu1x/signifix"
 readme = "README.md"

@@ -1,3 +1,10 @@
+# Version 0.8.0 (2017-09-26)
+
+  * Compiles on stable Rust by reimplementing the `try_from` feature.
+  * Added `nightly` feature enabling `try_from` and `i128_type` support. This
+    replaces the reimplementation of `try_from`.
+  * Simplified code by using `binary_search_by()`.
+
 # Version 0.7.0 (2017-07-10)
 
   * Added explicit localization support.

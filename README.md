@@ -90,9 +90,9 @@ used by adding `signifix` to the dependencies in your project's
 
 ```toml
 [dependencies]
-signifix = "0.7"
+signifix = "0.8"
 
-# Optionally enable `i128_type` support. Requires nightly Rust.
+# Optionally enable `try_from` and `i128_type` support on nightly Rust.
 #[dependencies.signifix]
 #features = ["nightly"]
 ```
@@ -100,7 +100,9 @@ signifix = "0.7"
 and this to your crate root:
 
 ```rust
-#![feature(try_from)] // Until stabilized. Requires nightly Rust.
+// Optionally enable `try_from` and `i128_type` support on nightly Rust.
+// Required if the `nightly` feature is enabled in your `Cargo.toml`.
+//#![feature(try_from, i128_type)]
 
 extern crate signifix;
 ```
@@ -113,7 +115,7 @@ The Signifix notations result in a fixed number of characters preventing
 jumps to the left or right while making maximum use of their occupied space:
 
 ```rust
-use std::convert::TryFrom; // Until stabilized.
+use signifix::TryFrom; // Until stabilized.
 
 use signifix::{metric, binary, Result};
 
@@ -168,7 +170,7 @@ assert_eq!(binary(1_023.499_999_999_999_95),
 This is useful to smoothly refresh a transfer rate within a terminal:
 
 ```rust
-use std::convert::TryFrom; // Until stabilized.
+use signifix::TryFrom; // Until stabilized.
 
 use std::f64;
 use std::time::Duration;
@@ -218,7 +220,7 @@ Or to monitor a measured quantity like an electrical current including its
 direction with positive numbers being padded to align with negative ones:
 
 ```rust
-use std::convert::TryFrom; // Until stabilized.
+use signifix::TryFrom; // Until stabilized.
 
 use signifix::metric::{Signifix, Result, DEF_MAX_LEN};
 
@@ -242,7 +244,7 @@ While to visualize a change in file size, a plus sign might be preferred for
 positive numbers:
 
 ```rust
-use std::convert::TryFrom; // Until stabilized.
+use signifix::TryFrom; // Until stabilized.
 
 use signifix::metric::{Signifix, Error, Result};
 
@@ -263,11 +265,11 @@ The binary prefix instead suits well to visualize quantities being multiples
 of powers of two, such as memory boundaries due to binary addressing:
 
 ```rust
-use std::convert::TryFrom; // Until stabilized.
+use signifix::TryFrom; // Until stabilized.
 
 use signifix::binary::{Signifix, Error, Result};
 
-let boundary_stat = |used: usize, size: usize| -> Result<String> {
+let boundary_stat = |used: u64, size: u64| -> Result<String> {
 	if used == 0 {
 		let size = Signifix::try_from(size)?;
 		return Ok(format!("    0   B (    0 %) of {}B", size));
@@ -281,17 +283,17 @@ let boundary_stat = |used: usize, size: usize| -> Result<String> {
 	Ok(format!("{}B ({}) of {}B", used, p100, size))
 };
 
-assert_eq!(boundary_stat(0_000usize.pow(1), 1_024usize.pow(3)),
+assert_eq!(boundary_stat(0_000u64.pow(1), 1_024u64.pow(3)),
 	Ok("    0   B (    0 %) of 1.000 GiB".into()));
-assert_eq!(boundary_stat(1_024usize.pow(2), 1_024usize.pow(3)),
+assert_eq!(boundary_stat(1_024u64.pow(2), 1_024u64.pow(3)),
 	Ok("1.000 MiB (  < 1 %) of 1.000 GiB".into()));
-assert_eq!(boundary_stat(3_292usize.pow(2), 1_024usize.pow(3)),
+assert_eq!(boundary_stat(3_292u64.pow(2), 1_024u64.pow(3)),
 	Ok("10.34 MiB (1.009 %) of 1.000 GiB".into()));
-assert_eq!(boundary_stat(8_192usize.pow(2), 1_024usize.pow(3)),
+assert_eq!(boundary_stat(8_192u64.pow(2), 1_024u64.pow(3)),
 	Ok("64.00 MiB (6.250 %) of 1.000 GiB".into()));
-assert_eq!(boundary_stat(1_000usize.pow(3), 1_024usize.pow(3)),
+assert_eq!(boundary_stat(1_000u64.pow(3), 1_024u64.pow(3)),
 	Ok("953.7 MiB (93.13 %) of 1.000 GiB".into()));
-assert_eq!(boundary_stat(1_024usize.pow(3), 1_024usize.pow(3)),
+assert_eq!(boundary_stat(1_024u64.pow(3), 1_024u64.pow(3)),
 	Ok("1.000 GiB (100.0 %) of 1.000 GiB".into()));
 ```
 
@@ -303,7 +305,7 @@ into a locale-sensitive newtype which implements the `Display` trait via the
 `Signifix::fmt()` method:
 
 ```rust
-use std::convert::TryFrom; // Until stabilized.
+use signifix::TryFrom; // Until stabilized.
 
 use signifix::binary::{Signifix, Result};
 
@@ -347,7 +349,7 @@ Customization can be achieved by extracting information from the `Signifix`
 type via its methods:
 
 ```rust
-use std::convert::TryFrom; // Until stabilized.
+use signifix::TryFrom; // Until stabilized.
 
 use signifix::metric::{Signifix, Result};
 
