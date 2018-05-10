@@ -2,7 +2,7 @@ language: rust
 env: FEATURES=""
 matrix:
   include:
-    - rust: 1.17.0
+    - rust: 1.26.0
     - rust: stable
     - rust: beta
     - rust: nightly

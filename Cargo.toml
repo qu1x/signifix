@@ -1,6 +1,6 @@
 [package]
 name = "signifix"
-version = "0.8.0"
+version = "0.9.0"
 authors = [
 	"Rouven Spreckels <n3vu0r@qu1x.org>",
 ]

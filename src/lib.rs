@@ -1,4 +1,4 @@
-// Copyright (c) 2016, 2017 Rouven Spreckels <n3vu0r@qu1x.org>
+// Copyright (c) 2016, 2017, 2018 Rouven Spreckels <n3vu0r@qu1x.org>
 //
 // Usage of the works is permitted provided that
 // this instrument is retained with the works, so that
@@ -82,9 +82,9 @@
 //!
 //! ```toml
 //! [dependencies]
-//! signifix = "0.8"
+//! signifix = "0.9"
 //!
-//! # Optionally enable `try_from` and `i128_type` support on nightly Rust.
+//! # Optionally enable `try_from` support on nightly Rust.
 //! #[dependencies.signifix]
 //! #features = ["nightly"]
 //! ```
@@ -92,9 +92,9 @@
 //! and this to your crate root:
 //!
 //! ```
-//! // Optionally enable `try_from` and `i128_type` support on nightly Rust.
+//! // Optionally enable `try_from` support on nightly Rust.
 //! // Required if the `nightly` feature is enabled in your `Cargo.toml`.
-//! //#![feature(try_from, i128_type)]
+//! //#![feature(try_from)]
 //!
 //! extern crate signifix;
 //! ```
@@ -107,7 +107,7 @@
 //! jumps to the left or right while making maximum use of their occupied space:
 //!
 //! ```
-//! # #![cfg_attr(feature = "nightly", feature(try_from, i128_type))]
+//! # #![cfg_attr(feature = "nightly", feature(try_from))]
 //! use signifix::TryFrom; // Until stabilized.
 //!
 //! use signifix::{metric, binary, Result};
@@ -163,7 +163,7 @@
 //! This is useful to smoothly refresh a transfer rate within a terminal:
 //!
 //! ```
-//! # #![cfg_attr(feature = "nightly", feature(try_from, i128_type))]
+//! # #![cfg_attr(feature = "nightly", feature(try_from))]
 //! use signifix::TryFrom; // Until stabilized.
 //!
 //! use std::f64;
@@ -214,7 +214,7 @@
 //! direction with positive numbers being padded to align with negative ones:
 //!
 //! ```
-//! # #![cfg_attr(feature = "nightly", feature(try_from, i128_type))]
+//! # #![cfg_attr(feature = "nightly", feature(try_from))]
 //! use signifix::TryFrom; // Until stabilized.
 //!
 //! use signifix::metric::{Signifix, Result, DEF_MAX_LEN};
@@ -239,7 +239,7 @@
 //! positive numbers:
 //!
 //! ```
-//! # #![cfg_attr(feature = "nightly", feature(try_from, i128_type))]
+//! # #![cfg_attr(feature = "nightly", feature(try_from))]
 //! use signifix::TryFrom; // Until stabilized.
 //!
 //! use signifix::metric::{Signifix, Error, Result};
@@ -261,7 +261,7 @@
 //! of powers of two, such as memory boundaries due to binary addressing:
 //!
 //! ```
-//! # #![cfg_attr(feature = "nightly", feature(try_from, i128_type))]
+//! # #![cfg_attr(feature = "nightly", feature(try_from))]
 //! use signifix::TryFrom; // Until stabilized.
 //!
 //! use signifix::binary::{Signifix, Error, Result};
@@ -302,7 +302,7 @@
 //! `Signifix::fmt()` method:
 //!
 //! ```
-//! # #![cfg_attr(feature = "nightly", feature(try_from, i128_type))]
+//! # #![cfg_attr(feature = "nightly", feature(try_from))]
 //! use signifix::TryFrom; // Until stabilized.
 //!
 //! use signifix::binary::{Signifix, Result};
@@ -347,7 +347,7 @@
 //! type via its methods:
 //!
 //! ```
-//! # #![cfg_attr(feature = "nightly", feature(try_from, i128_type))]
+//! # #![cfg_attr(feature = "nightly", feature(try_from))]
 //! use signifix::TryFrom; // Until stabilized.
 //!
 //! use signifix::metric::{Signifix, Result};
@@ -390,7 +390,7 @@
 
 #![deny(missing_docs)]
 
-#![cfg_attr(feature = "nightly", feature(try_from, i128_type))]
+#![cfg_attr(feature = "nightly", feature(try_from))]
 
 use std::result;
 use std::error;

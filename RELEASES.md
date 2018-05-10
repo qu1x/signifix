@@ -1,3 +1,7 @@
+# Version 0.9.0 (2018-05-10)
+
+  * Added stable `i128_type` support requiring Rust `>= 1.26.0`.
+
 # Version 0.8.0 (2017-11-26)
 
   * Works now on stable Rust by reimplementing the `try_from` feature.

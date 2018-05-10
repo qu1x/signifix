@@ -14,7 +14,7 @@
 [Documentation]: https://docs.rs/signifix/badge.svg
 [License]: https://img.shields.io/crates/l/signifix.svg
 
-**Works now on stable Rust**
+**Works now on stable Rust (>= 1.26.0)**
 
 Formats a given number in one of the three Signifix notations
 [as defined below](#signifix-notations) by determining
@@ -92,9 +92,9 @@ used by adding `signifix` to the dependencies in your project's
 
 ```toml
 [dependencies]
-signifix = "0.8"
+signifix = "0.9"
 
-# Optionally enable `try_from` and `i128_type` support on nightly Rust.
+# Optionally enable `try_from` support on nightly Rust.
 #[dependencies.signifix]
 #features = ["nightly"]
 ```
@@ -102,9 +102,9 @@ signifix = "0.8"
 and this to your crate root:
 
 ```rust
-// Optionally enable `try_from` and `i128_type` support on nightly Rust.
+// Optionally enable `try_from` support on nightly Rust.
 // Required if the `nightly` feature is enabled in your `Cargo.toml`.
-//#![feature(try_from, i128_type)]
+//#![feature(try_from)]
 
 extern crate signifix;
 ```

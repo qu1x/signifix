@@ -1,4 +1,4 @@
-// Copyright (c) 2016, 2017 Rouven Spreckels <n3vu0r@qu1x.org>
+// Copyright (c) 2016, 2017, 2018 Rouven Spreckels <n3vu0r@qu1x.org>
 //
 // Usage of the works is permitted provided that
 // this instrument is retained with the works, so that
@@ -210,15 +210,8 @@ impl Display for Signifix {
 	}
 }
 
-#[cfg(feature = "nightly")]
 try_from! { i8, i16, i32, i64, i128, isize }
-#[cfg(feature = "nightly")]
 try_from! { u8, u16, u32, u64, u128, usize }
-
-#[cfg(not(feature = "nightly"))]
-try_from! { i8, i16, i32, i64, isize }
-#[cfg(not(feature = "nightly"))]
-try_from! { u8, u16, u32, u64, usize }
 
 try_from! { f32 }
 

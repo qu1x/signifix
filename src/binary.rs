@@ -1,4 +1,4 @@
-// Copyright (c) 2016, 2017 Rouven Spreckels <n3vu0r@qu1x.org>
+// Copyright (c) 2016, 2017, 2018 Rouven Spreckels <n3vu0r@qu1x.org>
 //
 // Usage of the works is permitted provided that
 // this instrument is retained with the works, so that
@@ -102,7 +102,6 @@ pub const SYMBOLS: [Option<&str>; 9] = [
 	Some("Pi"), Some("Ei"), Some("Zi"), Some("Yi"),
 ];
 
-#[cfg(feature = "nightly")]
 /// Binary prefix factors from `1 024 ^ 1` to `1 024 ^ 8` indexed from `1` to
 /// `8`, or `1 024 ^ 0` indexed at `0`.
 pub const FACTORS: [f64; 9] = [
@@ -111,21 +110,6 @@ pub const FACTORS: [f64; 9] = [
 	(1u128 << 30) as f64, (1u128 << 40) as f64,
 	(1u128 << 50) as f64, (1u128 << 60) as f64,
 	(1u128 << 70) as f64, (1u128 << 80) as f64,
-];
-
-#[cfg(not(feature = "nightly"))]
-/// Binary prefix factors from `1 024 ^ 1` to `1 024 ^ 8` indexed from `1` to
-/// `8`, or `1 024 ^ 0` indexed at `0`.
-pub const FACTORS: [f64; 9] = [
-	1f64,
-	1024f64,
-	1048576f64,
-	1073741824f64,
-	1099511627776f64,
-	1125899906842624f64,
-	1152921504606847000f64,
-	1180591620717411300000f64,
-	1208925819614629200000000f64,
 ];
 
 impl Signifix {
@@ -215,15 +199,8 @@ impl Display for Signifix {
 	}
 }
 
-#[cfg(feature = "nightly")]
 try_from! { i8, i16, i32, i64, i128, isize }
-#[cfg(feature = "nightly")]
 try_from! { u8, u16, u32, u64, u128, usize }
-
-#[cfg(not(feature = "nightly"))]
-try_from! { i8, i16, i32, i64, isize }
-#[cfg(not(feature = "nightly"))]
-try_from! { u8, u16, u32, u64, usize }
 
 try_from! { f32 }
 
