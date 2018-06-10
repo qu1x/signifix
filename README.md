@@ -393,7 +393,7 @@ assert_eq!(customization(&[
 
 ## License
 
-Copyright (c) 2016, 2017 Rouven Spreckels <n3vu0r@qu1x.org>
+Copyright (c) 2016, 2017, 2018 Rouven Spreckels <n3vu0r@qu1x.org>
 
 Usage of the works is permitted provided that
 this instrument is retained with the works, so that
