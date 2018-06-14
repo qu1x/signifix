@@ -392,11 +392,10 @@
 
 #![cfg_attr(feature = "nightly", feature(try_from))]
 
-use std::result;
-use std::error;
+#[macro_use]
+extern crate failure;
 
-use std::fmt;
-use std::fmt::{Display, Formatter};
+use std::result;
 
 use std::cmp::Ordering;
 
@@ -508,13 +507,15 @@ pub mod metric;
 pub mod binary;
 
 /// A common error arising from this crate's modules.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Fail)]
 pub enum Error {
 	/// A given number is not representable with any metric prefix.
-	Metric(metric::Error),
+	#[fail(display = "Not representable with metric prefix")]
+	Metric(#[cause] metric::Error),
 
 	/// A given number is not representable with any binary prefix.
-	Binary(binary::Error),
+	#[fail(display = "Not representable with binary prefix")]
+	Binary(#[cause] binary::Error),
 }
 
 impl From<metric::Error> for Error {
@@ -526,32 +527,6 @@ impl From<metric::Error> for Error {
 impl From<binary::Error> for Error {
 	fn from(error: binary::Error) -> Self {
 		Error::Binary(error)
-	}
-}
-
-impl Display for Error {
-	fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-		match *self {
-			Error::Metric(_) =>
-				write!(f, "{}", error::Error::description(self)),
-			Error::Binary(_) =>
-				write!(f, "{}", error::Error::description(self)),
-		}
-	}
-}
-
-impl error::Error for Error {
-	fn description(&self) -> &str {
-		match *self {
-			Error::Metric(_) => "Not representable with metric prefix",
-			Error::Binary(_) => "Not representable with binary prefix",
-		}
-	}
-	fn cause(&self) -> Option<&error::Error> {
-		match *self {
-			Error::Metric(ref error) => Some(error),
-			Error::Binary(ref error) => Some(error),
-		}
 	}
 }
 

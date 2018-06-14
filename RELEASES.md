@@ -1,3 +1,7 @@
+# Version 0.10.0 (2018-06-14)
+
+  * Migrated from `std::error` to `failure`.
+
 # Version 0.9.0 (2018-05-10)
 
   * Added stable `i128_type` support requiring Rust `>= 1.26.0`.

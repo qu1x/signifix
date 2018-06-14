@@ -9,7 +9,6 @@
 use super::TryFrom;
 
 use std::result;
-use std::error;
 
 use std::fmt;
 use std::fmt::{Display, Formatter};
@@ -18,57 +17,24 @@ use std::cmp::Ordering;
 
 /// An error arising from this module's `TryFrom` trait implementation for its
 /// `Signifix` type.
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq, Fail)]
 pub enum Error {
 	/// The given number is below the lower bound `±1.000 y` (`= ±1E-24`) of the
 	/// lowermost metric prefix yocto (`y = 1E-24`).
+	#[fail(display =
+		"Out of lower bound ±1.000 y (= ±1E-24) for number {:.3E}", _0)]
 	OutOfLowerBound(f64),
-
 	/// The given number is above the upper bound `±999.9 Y` (`≈ ±1E+27`) of the
 	/// uppermost metric prefix yotta (`Y = 1E+24`).
+	#[fail(display =
+		"Out of upper bound ±999.9 Y (≈ ±1E+27) for number {:.3E}", _0)]
 	OutOfUpperBound(f64),
-
 	/// The given number is actually not a number (NaN).
+	#[fail(display = "Not a number (NaN)")]
 	Nan,
 }
 
 impl Eq for Error {}
-
-impl Display for Error {
-	fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-		match *self {
-			Error::OutOfLowerBound(number) =>
-				write!(f, "{} for number {:.3E}",
-					error::Error::description(self), number),
-			Error::OutOfUpperBound(number) =>
-				write!(f, "{} for number {:.3E}",
-					error::Error::description(self), number),
-			Error::Nan =>
-				write!(f, "{}",
-					error::Error::description(self)),
-		}
-	}
-}
-
-impl error::Error for Error {
-	fn description(&self) -> &str {
-		match *self {
-			Error::OutOfLowerBound(..) =>
-				"Out of lower bound ±1.000 y (= ±1E-24)",
-			Error::OutOfUpperBound(..) =>
-				"Out of upper bound ±999.9 Y (≈ ±1E+27)",
-			Error::Nan =>
-				"Not a Number (NaN)",
-		}
-	}
-	fn cause(&self) -> Option<&error::Error> {
-		match *self {
-			Error::OutOfLowerBound(..) => None,
-			Error::OutOfUpperBound(..) => None,
-			Error::Nan => None,
-		}
-	}
-}
 
 /// The canonical `Result` type using this module's `Error` type.
 pub type Result<T> = result::Result<T, Error>;

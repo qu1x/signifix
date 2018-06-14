@@ -33,5 +33,8 @@ include = [
 [badges]
 travis-ci = { repository = "qu1x/signifix" }
 
+[dependencies]
+failure = "0.1"
+
 [features]
 nightly = []
