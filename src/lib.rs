@@ -108,7 +108,7 @@
 //!
 //! ```
 //! # #![cfg_attr(feature = "nightly", feature(try_from))]
-//! use signifix::TryFrom; // Until stabilized.
+//! use signifix::TryFrom; // Until it has been stabilized.
 //!
 //! use signifix::{metric, binary, Result};
 //!
@@ -164,7 +164,7 @@
 //!
 //! ```
 //! # #![cfg_attr(feature = "nightly", feature(try_from))]
-//! use signifix::TryFrom; // Until stabilized.
+//! use signifix::TryFrom; // Until it has been stabilized.
 //!
 //! use std::f64;
 //! use std::time::Duration;
@@ -215,7 +215,7 @@
 //!
 //! ```
 //! # #![cfg_attr(feature = "nightly", feature(try_from))]
-//! use signifix::TryFrom; // Until stabilized.
+//! use signifix::TryFrom; // Until it has been stabilized.
 //!
 //! use signifix::metric::{Signifix, Result, DEF_MAX_LEN};
 //!
@@ -240,7 +240,7 @@
 //!
 //! ```
 //! # #![cfg_attr(feature = "nightly", feature(try_from))]
-//! use signifix::TryFrom; // Until stabilized.
+//! use signifix::TryFrom; // Until it has been stabilized.
 //!
 //! use signifix::metric::{Signifix, Error, Result};
 //!
@@ -262,7 +262,7 @@
 //!
 //! ```
 //! # #![cfg_attr(feature = "nightly", feature(try_from))]
-//! use signifix::TryFrom; // Until stabilized.
+//! use signifix::TryFrom; // Until it has been stabilized.
 //!
 //! use signifix::binary::{Signifix, Error, Result};
 //!
@@ -303,7 +303,7 @@
 //!
 //! ```
 //! # #![cfg_attr(feature = "nightly", feature(try_from))]
-//! use signifix::TryFrom; // Until stabilized.
+//! use signifix::TryFrom; // Until it has been stabilized.
 //!
 //! use signifix::binary::{Signifix, Result};
 //!
@@ -348,7 +348,7 @@
 //!
 //! ```
 //! # #![cfg_attr(feature = "nightly", feature(try_from))]
-//! use signifix::TryFrom; // Until stabilized.
+//! use signifix::TryFrom; // Until it has been stabilized.
 //!
 //! use signifix::metric::{Signifix, Result};
 //!
@@ -402,7 +402,7 @@ use std::cmp::Ordering;
 #[cfg(feature = "nightly")]
 pub use std::convert::{TryInto, TryFrom};
 
-/// Required until the `try_from` feature stabilised.
+/// Required until the `try_from` feature has been stabilized.
 ///
 /// An attempted conversion that consumes `self`, which may or may not be
 /// expensive.
@@ -415,7 +415,7 @@ pub trait TryInto<T>: Sized {
 	fn try_into(self) -> result::Result<T, Self::Error>;
 }
 
-/// Required until the `try_from` feature stabilised.
+/// Required until the `try_from` feature has been stabilized.
 ///
 /// Attempt to construct `Self` via a conversion.
 #[cfg(not(feature = "nightly"))]

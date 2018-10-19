@@ -40,10 +40,10 @@ impl Eq for Error {}
 pub type Result<T> = result::Result<T, Error>;
 
 /// Intermediate implementor type of this module's `TryFrom` and `Display` trait
-/// implementations. Former tries to convert a given number to this type by
+/// implementations. Former tries to convert a given number into this type by
 /// determining the appropriate metric prefix, the normalized significand, and
 /// the decimal mark position while latter uses this type's fields to format the
-/// number to a string of four significant figures inclusive the metric prefix
+/// number as a string of four significant figures inclusive the metric prefix
 /// symbol.
 ///
 /// Interpreted formatting parameters are
