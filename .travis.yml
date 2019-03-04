@@ -2,12 +2,10 @@ language: rust
 env: FEATURES=""
 matrix:
   include:
-    - rust: 1.26.0
+    - rust: 1.35.0
     - rust: stable
     - rust: beta
     - rust: nightly
-    - rust: nightly
-      env: FEATURES="nightly"
 script:
   - cargo build --verbose --features "$FEATURES"
   - cargo test --verbose --features "$FEATURES"

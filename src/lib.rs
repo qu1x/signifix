@@ -1,4 +1,4 @@
-// Copyright (c) 2016, 2017, 2018 Rouven Spreckels <n3vu0r@qu1x.org>
+// Copyright (c) 2016-2019 Rouven Spreckels <n3vu0r@qu1x.org>
 //
 // Usage of the works is permitted provided that
 // this instrument is retained with the works, so that
@@ -76,27 +76,13 @@
 //!
 //! # Usage
 //!
-//! This crate is [on crates.io](https://crates.io/crates/signifix) and can be
-//! used by adding `signifix` to the dependencies in your project's
-//! `Cargo.toml`:
+//! This crate works since Rust 1.35 on stable channel. It is
+//! [on crates.io](https://crates.io/crates/signifix) and can be used by adding
+//! `signifix` to the dependencies in your project's `Cargo.toml`:
 //!
 //! ```toml
 //! [dependencies]
-//! signifix = "0.9"
-//!
-//! # Optionally enable `try_from` support on nightly Rust.
-//! #[dependencies.signifix]
-//! #features = ["nightly"]
-//! ```
-//!
-//! and this to your crate root:
-//!
-//! ```
-//! // Optionally enable `try_from` support on nightly Rust.
-//! // Required if the `nightly` feature is enabled in your `Cargo.toml`.
-//! //#![feature(try_from)]
-//!
-//! extern crate signifix;
+//! signifix = "0.10"
 //! ```
 //!
 //! # Examples
@@ -107,8 +93,7 @@
 //! jumps to the left or right while making maximum use of their occupied space:
 //!
 //! ```
-//! # #![cfg_attr(feature = "nightly", feature(try_from))]
-//! use signifix::TryFrom; // Until it has been stabilized.
+//! use std::convert::TryFrom;
 //!
 //! use signifix::{metric, binary, Result};
 //!
@@ -163,8 +148,7 @@
 //! This is useful to smoothly refresh a transfer rate within a terminal:
 //!
 //! ```
-//! # #![cfg_attr(feature = "nightly", feature(try_from))]
-//! use signifix::TryFrom; // Until it has been stabilized.
+//! use std::convert::TryFrom;
 //!
 //! use std::f64;
 //! use std::time::Duration;
@@ -214,8 +198,7 @@
 //! direction with positive numbers being padded to align with negative ones:
 //!
 //! ```
-//! # #![cfg_attr(feature = "nightly", feature(try_from))]
-//! use signifix::TryFrom; // Until it has been stabilized.
+//! use std::convert::TryFrom;
 //!
 //! use signifix::metric::{Signifix, Result, DEF_MAX_LEN};
 //!
@@ -239,8 +222,7 @@
 //! positive numbers:
 //!
 //! ```
-//! # #![cfg_attr(feature = "nightly", feature(try_from))]
-//! use signifix::TryFrom; // Until it has been stabilized.
+//! use std::convert::TryFrom;
 //!
 //! use signifix::metric::{Signifix, Error, Result};
 //!
@@ -261,8 +243,7 @@
 //! of powers of two, such as memory boundaries due to binary addressing:
 //!
 //! ```
-//! # #![cfg_attr(feature = "nightly", feature(try_from))]
-//! use signifix::TryFrom; // Until it has been stabilized.
+//! use std::convert::TryFrom;
 //!
 //! use signifix::binary::{Signifix, Error, Result};
 //!
@@ -302,8 +283,7 @@
 //! `Signifix::fmt()` method:
 //!
 //! ```
-//! # #![cfg_attr(feature = "nightly", feature(try_from))]
-//! use signifix::TryFrom; // Until it has been stabilized.
+//! use std::convert::TryFrom;
 //!
 //! use signifix::binary::{Signifix, Result};
 //!
@@ -347,8 +327,7 @@
 //! type via its methods:
 //!
 //! ```
-//! # #![cfg_attr(feature = "nightly", feature(try_from))]
-//! use signifix::TryFrom; // Until it has been stabilized.
+//! use std::convert::TryFrom;
 //!
 //! use signifix::metric::{Signifix, Result};
 //!
@@ -390,51 +369,12 @@
 
 #![deny(missing_docs)]
 
-#![cfg_attr(feature = "nightly", feature(try_from))]
-
 #[macro_use]
-extern crate failure;
+extern crate err_derive;
 
 use std::result;
 
 use std::cmp::Ordering;
-
-#[cfg(feature = "nightly")]
-pub use std::convert::{TryInto, TryFrom};
-
-/// Required until the `try_from` feature has been stabilized.
-///
-/// An attempted conversion that consumes `self`, which may or may not be
-/// expensive.
-#[cfg(not(feature = "nightly"))]
-pub trait TryInto<T>: Sized {
-	/// The type returned in the event of a conversion error.
-	type Error;
-
-	/// Performs the conversion.
-	fn try_into(self) -> result::Result<T, Self::Error>;
-}
-
-/// Required until the `try_from` feature has been stabilized.
-///
-/// Attempt to construct `Self` via a conversion.
-#[cfg(not(feature = "nightly"))]
-pub trait TryFrom<T>: Sized {
-	/// The type returned in the event of a conversion error.
-	type Error;
-
-	/// Performs the conversion.
-	fn try_from(value: T) -> result::Result<Self, Self::Error>;
-}
-
-#[cfg(not(feature = "nightly"))]
-impl<T, U> TryInto<U> for T where U: TryFrom<T> {
-	type Error = U::Error;
-
-	fn try_into(self) -> result::Result<U, U::Error> {
-		U::try_from(self)
-	}
-}
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 struct Signifix {
@@ -507,14 +447,14 @@ pub mod metric;
 pub mod binary;
 
 /// A common error arising from this crate's modules.
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Fail)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Error)]
 pub enum Error {
 	/// A given number is not representable with any metric prefix.
-	#[fail(display = "Not representable with metric prefix")]
+	#[error(display = "Not representable with any metric prefix")]
 	Metric(#[cause] metric::Error),
 
 	/// A given number is not representable with any binary prefix.
-	#[fail(display = "Not representable with binary prefix")]
+	#[error(display = "Not representable with any binary prefix")]
 	Binary(#[cause] binary::Error),
 }
 

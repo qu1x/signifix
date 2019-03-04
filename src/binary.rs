@@ -1,4 +1,4 @@
-// Copyright (c) 2016, 2017, 2018 Rouven Spreckels <n3vu0r@qu1x.org>
+// Copyright (c) 2016-2019 Rouven Spreckels <n3vu0r@qu1x.org>
 //
 // Usage of the works is permitted provided that
 // this instrument is retained with the works, so that
@@ -6,7 +6,7 @@
 //
 // DISCLAIMER: THE WORKS ARE WITHOUT WARRANTY.
 
-use super::TryFrom;
+use std::convert::TryFrom;
 
 use std::result;
 
@@ -17,19 +17,19 @@ use std::cmp::Ordering;
 
 /// An error arising from this module's `TryFrom` trait implementation for its
 /// `Signifix` type.
-#[derive(Debug, Copy, Clone, PartialEq, Fail)]
+#[derive(Debug, Copy, Clone, PartialEq, Error)]
 pub enum Error {
 	/// The given number is below the lower bound `±1.000` (`= ±1 024 ^ 0`).
-	#[fail(display =
+	#[error(display =
 		"Out of lower bound ±1.000 (= ±1 024 ^ 0) for number {:.3E}", _0)]
 	OutOfLowerBound(f64),
 	/// The given number is above the upper bound `±1 023 Yi` (`≈ ±1 024 ^ 9`)
 	/// of the uppermost binary prefix yobi (`Yi = 1 024 ^ 8`).
-	#[fail(display =
+	#[error(display =
 		"Out of upper bound ±1 023 Yi (≈ ±1 024 ^ 9) for number {:.3E}", _0)]
 	OutOfUpperBound(f64),
 	/// The given number is actually not a number (NaN).
-	#[fail(display = "Not a number (NaN)")]
+	#[error(display = "Not a number (NaN)")]
 	Nan,
 }
 

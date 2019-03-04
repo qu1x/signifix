@@ -14,8 +14,6 @@
 [Documentation]: https://docs.rs/signifix/badge.svg
 [License]: https://img.shields.io/crates/l/signifix.svg
 
-**Works now on stable Rust (>= 1.26.0)**
-
 Formats a given number in one of the three Signifix notations
 [as defined below](#signifix-notations) by determining
 
@@ -86,27 +84,13 @@ in `±1␣023␣Ki`. The plus sign of positive numbers is optional.
 
 ## Usage
 
-This crate is [on crates.io](https://crates.io/crates/signifix) and can be
-used by adding `signifix` to the dependencies in your project's
-`Cargo.toml`:
+This crate works since Rust 1.35 on stable channel. It is
+[on crates.io](https://crates.io/crates/signifix) and can be used by adding
+`signifix` to the dependencies in your project's `Cargo.toml`:
 
 ```toml
 [dependencies]
-signifix = "0.9"
-
-# Optionally enable `try_from` support on nightly Rust.
-#[dependencies.signifix]
-#features = ["nightly"]
-```
-
-and this to your crate root:
-
-```rust
-// Optionally enable `try_from` support on nightly Rust.
-// Required if the `nightly` feature is enabled in your `Cargo.toml`.
-//#![feature(try_from)]
-
-extern crate signifix;
+signifix = "0.10"
 ```
 
 ## Examples
@@ -117,7 +101,7 @@ The Signifix notations result in a fixed number of characters preventing
 jumps to the left or right while making maximum use of their occupied space:
 
 ```rust
-use signifix::TryFrom; // Until stabilized.
+use std::convert::TryFrom;
 
 use signifix::{metric, binary, Result};
 
@@ -172,7 +156,7 @@ assert_eq!(binary(1_023.499_999_999_999_95),
 This is useful to smoothly refresh a transfer rate within a terminal:
 
 ```rust
-use signifix::TryFrom; // Until stabilized.
+use std::convert::TryFrom;
 
 use std::f64;
 use std::time::Duration;
@@ -222,7 +206,7 @@ Or to monitor a measured quantity like an electrical current including its
 direction with positive numbers being padded to align with negative ones:
 
 ```rust
-use signifix::TryFrom; // Until stabilized.
+use std::convert::TryFrom;
 
 use signifix::metric::{Signifix, Result, DEF_MAX_LEN};
 
@@ -246,7 +230,7 @@ While to visualize a change in file size, a plus sign might be preferred for
 positive numbers:
 
 ```rust
-use signifix::TryFrom; // Until stabilized.
+use std::convert::TryFrom;
 
 use signifix::metric::{Signifix, Error, Result};
 
@@ -267,7 +251,7 @@ The binary prefix instead suits well to visualize quantities being multiples
 of powers of two, such as memory boundaries due to binary addressing:
 
 ```rust
-use signifix::TryFrom; // Until stabilized.
+use std::convert::TryFrom;
 
 use signifix::binary::{Signifix, Error, Result};
 
@@ -307,7 +291,7 @@ into a locale-sensitive newtype which implements the `Display` trait via the
 `Signifix::fmt()` method:
 
 ```rust
-use signifix::TryFrom; // Until stabilized.
+use std::convert::TryFrom;
 
 use signifix::binary::{Signifix, Result};
 
@@ -351,7 +335,7 @@ Customization can be achieved by extracting information from the `Signifix`
 type via its methods:
 
 ```rust
-use signifix::TryFrom; // Until stabilized.
+use std::convert::TryFrom;
 
 use signifix::metric::{Signifix, Result};
 
@@ -393,7 +377,7 @@ assert_eq!(customization(&[
 
 ## License
 
-Copyright (c) 2016, 2017, 2018 Rouven Spreckels <n3vu0r@qu1x.org>
+Copyright (c) 2016-2019 Rouven Spreckels <n3vu0r@qu1x.org>
 
 Usage of the works is permitted provided that
 this instrument is retained with the works, so that
