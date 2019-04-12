@@ -4,12 +4,14 @@
 
 [![Build Status][]](https://travis-ci.org/qu1x/signifix)
 [![Downloads][]](https://crates.io/crates/signifix)
+[![Rust][]](https://blog.rust-lang.org/2019/04/11/Rust-1.34.0.html)
 [![Version][]](https://crates.io/crates/signifix)
 [![Documentation][]](https://docs.rs/signifix)
 [![License][]](https://opensource.org/licenses/Fair)
 
 [Build Status]: https://travis-ci.org/qu1x/signifix.svg
 [Downloads]: https://img.shields.io/crates/d/signifix.svg
+[Rust]: https://img.shields.io/badge/rust-v1.34-brightgreen.svg
 [Version]: https://img.shields.io/crates/v/signifix.svg
 [Documentation]: https://docs.rs/signifix/badge.svg
 [License]: https://img.shields.io/crates/l/signifix.svg
