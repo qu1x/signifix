@@ -76,7 +76,7 @@
 //!
 //! # Usage
 //!
-//! This crate works since Rust 1.35 on stable channel. It is
+//! This crate works since Rust 1.34 on stable channel. It is
 //! [on crates.io](https://crates.io/crates/signifix) and can be used by adding
 //! `signifix` to the dependencies in your project's `Cargo.toml`:
 //!
