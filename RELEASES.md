@@ -1,6 +1,6 @@
-# Version 0.10.0 (2019-03-04)
+# Version 0.10.0 (2019-04-12)
 
-  * Added stable `try_from` support requiring Rust `>= 1.35.0`.
+  * Added stable `try_from` support requiring Rust `>= 1.34.0`.
   * Migrate to fixed `std::error` using `err-derive`.
 
 # Version 0.9.0 (2018-05-10)
