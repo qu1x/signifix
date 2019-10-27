@@ -6,6 +6,8 @@
 //
 // DISCLAIMER: THE WORKS ARE WITHOUT WARRANTY.
 
+use err_derive::Error;
+
 use std::convert::TryFrom;
 
 use std::result;

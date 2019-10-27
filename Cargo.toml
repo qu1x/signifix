@@ -1,6 +1,7 @@
 [package]
 name = "signifix"
 version = "0.10.0"
+edition = "2018"
 authors = [
 	"Rouven Spreckels <n3vu0r@qu1x.org>",
 ]
@@ -34,4 +35,4 @@ include = [
 travis-ci = { repository = "qu1x/signifix" }
 
 [dependencies]
-err-derive = "0.1"
+err-derive = "0.2"

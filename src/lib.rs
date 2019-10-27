@@ -369,8 +369,7 @@
 
 #![deny(missing_docs)]
 
-#[macro_use]
-extern crate err_derive;
+use err_derive::Error;
 
 use std::result;
 
@@ -451,23 +450,11 @@ pub mod binary;
 pub enum Error {
 	/// A given number is not representable with any metric prefix.
 	#[error(display = "Not representable with any metric prefix")]
-	Metric(#[cause] metric::Error),
+	Metric(#[source] metric::Error),
 
 	/// A given number is not representable with any binary prefix.
 	#[error(display = "Not representable with any binary prefix")]
-	Binary(#[cause] binary::Error),
-}
-
-impl From<metric::Error> for Error {
-	fn from(error: metric::Error) -> Self {
-		Error::Metric(error)
-	}
-}
-
-impl From<binary::Error> for Error {
-	fn from(error: binary::Error) -> Self {
-		Error::Binary(error)
-	}
+	Binary(#[source] binary::Error),
 }
 
 /// The canonical `Result` type using this crate's `Error` type.
