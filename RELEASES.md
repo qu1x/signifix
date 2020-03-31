@@ -1,3 +1,8 @@
+# Version 0.10.1 (2020-03-31)
+
+  * Use Rust edition `2018`.
+  * Update `err-derive`.
+
 # Version 0.10.0 (2019-04-12)
 
   * Added stable `try_from` support requiring Rust `>= 1.34.0`.
